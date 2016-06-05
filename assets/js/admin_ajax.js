@@ -15,7 +15,6 @@ jQuery(document).ready( function( $ ) {
         var dbuser = $("#dbuser").val();
         var dbpass = $("#dbpass").val();
 
-
             // data for post request
             var data = {
                 action: 'admin_action',

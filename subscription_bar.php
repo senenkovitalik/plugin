@@ -36,23 +36,23 @@ class SubscriptionBar {
 
 	public function __construct( DB $db ) {
 
-		 // add theme CSS files
-	 	 add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ) );
+		// add theme CSS files
+	 	add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ) );
 
-		 // add theme JS file
-		 add_action( 'wp_enqueue_scripts', array( $this, 'add_js'));
+		// add theme JS file
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_js'));
 
-		 // ajax admin
-		 add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
-		 add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
+		// ajax admin
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
+		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
 
-		 // ajax theme
-		 add_action( 'wp_enqueue_scripts', array( $this, 'theme_enqueue_ajax' ) );
-		 add_action( 'wp_ajax_action', array( $this, 'theme_action_callback' ) );
-		 add_action( 'wp_ajax_nopriv_action', array( $this, 'theme_action_callback' ) );
+		// ajax theme
+		add_action( 'wp_enqueue_scripts', array( $this, 'theme_enqueue_ajax' ) );
+		add_action( 'wp_ajax_action', array( $this, 'theme_action_callback' ) );
+		add_action( 'wp_ajax_nopriv_action', array( $this, 'theme_action_callback' ) );
 
-		 // admin settings page
-		 add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
+		// admin settings page
+		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
 
 		$this->db = $db;
 	}
@@ -144,7 +144,13 @@ class SubscriptionBar {
 	 * Add menu item to admin page
      */
 	function admin_add_menu_item() {
-		add_menu_page( 'Subscription Bar', 'Subscript Bar settings', 'manage_options', 'subscription_bar', array( $this, 'show_settings_page') );
+		add_menu_page(
+			'Subscription Bar', 
+			'Subscript Bar settings', 
+			'manage_options', 
+			'subscription_bar', 
+			array( $this, 'show_settings_page')
+			);
 	}
 
 	/**
