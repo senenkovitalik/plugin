@@ -24,14 +24,6 @@
             <td>Database type</td>
             <td><input type="text" id="dbtype" title="MySQL, MS SQL, Oracle" value="<?php echo $s['dbtype']; ?>" required /></td>
         </tr>
-        <!-- <tr>
-            <td>Server address</td>
-            <td><input type="text" id="server" title="Server address" value="<?php echo $s['server']; ?>" required /></td>
-        </tr>
-        <tr>
-            <td>DB name</td>
-            <td><input type="text" id="dbname" title="DB name" value="<?php echo $s['dbname']; ?>" required /></td>
-        </tr> -->
         <tr>
             <td>Table name</td>
             <td><input type="text" id="dbtable" title="DB table" value="<?php echo $s['dbtable']; ?>" required /></td>
