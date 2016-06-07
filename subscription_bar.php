@@ -118,7 +118,7 @@ class SubscriptionBar {
      */
 	function admin_action_callback() {
 
-		$user_id = $_POST['user_id']
+		$user_id = $_POST['user_id'];
 
 		$status = $this->db->save_settings( $user_id );
 
