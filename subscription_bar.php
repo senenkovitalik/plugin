@@ -118,14 +118,9 @@ class SubscriptionBar {
      */
 	function admin_action_callback() {
 
-		$dbtype = $_POST['dbtype'];
-        $server = $_POST['server'];
-        $dbname = $_POST['dbname'];
-        $dbtable = $_POST['dbtable'];
-        $dbuser = $_POST['dbuser'];
-		$dbpass = $_POST['dbpass'];
+		$user_id = $_POST['user_id']
 
-		$status = $this->db->save_settings( $dbtype, $server, $dbname, $dbtable, $dbuser, $dbpass );
+		$status = $this->db->save_settings( $user_id );
 
 		if ( $status === false ) {
 			echo "Some problems occur";

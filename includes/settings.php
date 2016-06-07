@@ -22,7 +22,7 @@
     <table>
         <tr>
             <td>User ID</td>
-            <td><input type="text" id="user-id" title="User ID" value="<?php echo $s['user_id']; ?>" required></td>
+            <td><input type="text" id="user_id" title="User ID" value="<?php echo $s['user_id']; ?>" required></td>
         </tr>
         <tr>
             <td colspan="2">
