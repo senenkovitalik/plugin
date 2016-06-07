@@ -44,12 +44,6 @@ class DB {
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
 				id 			int(1) 	DEFAULT 1,
-				dbtype		text 	NOT NULL,
-				server 		text 	NOT NULL,
-				dbname 		text 	NOT NULL,
-				dbtable		text 	NOT NULL,
-				dbuser 		text 	NOT NULL,
-				dbpass 		text 	NOT NULL,
 				user_id		text 	NOT NULL
 			);";
 
