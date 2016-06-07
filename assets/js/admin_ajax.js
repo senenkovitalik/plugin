@@ -8,22 +8,12 @@ jQuery(document).ready( function( $ ) {
 
         event.preventDefault();
 
-        var dbtype = $("#dbtype").val();
-        var server = $("#server").val();
-        var dbname = $("#dbname").val();
-        var dbtable = $("#dbtable").val();
-        var dbuser = $("#dbuser").val();
-        var dbpass = $("#dbpass").val();
+        var user_id = $("#user_id").val();
 
             // data for post request
             var data = {
                 action: 'admin_action',
-                dbtype: dbtype,
-                server: server,
-                dbname: dbname,
-                dbtable: dbtable,
-                dbuser: dbuser,
-                dbpass: dbpass
+                user_id: user_id
             };
 
             // send data to server

@@ -21,22 +21,6 @@
 <form id="form_db_set">
     <table>
         <tr>
-            <td>Database type</td>
-            <td><input type="text" id="dbtype" title="MySQL, MS SQL, Oracle" value="<?php echo $s['dbtype']; ?>" required /></td>
-        </tr>
-        <tr>
-            <td>Table name</td>
-            <td><input type="text" id="dbtable" title="DB table" value="<?php echo $s['dbtable']; ?>" required /></td>
-        </tr>
-        <tr>
-            <td>DB user</td>
-            <td><input type="text" id="dbuser" title="DB user" value="<?php echo $s['dbuser']; ?>" required /></td>
-        </tr>
-        <tr>
-            <td>DB password</td>
-            <td><input type="password" id="dbpass" title="DB password" value="<?php echo $s['dbpass']; ?>"  required /></td>
-        </tr>
-        <tr>
             <td>User ID</td>
             <td><input type="text" id="user-id" title="User ID" value="<?php echo $s['user_id']; ?>" required></td>
         </tr>

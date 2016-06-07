@@ -72,7 +72,7 @@ class DB {
 	 * @param $dbpass
 	 * @return false|int
      */
-	function save_settings($dbtype, $server, $dbname, $dbtable, $dbuser, $dbpass, $user_id) {
+	function save_settings($user_id) {
 
 		// this table must have only one row
 		// before insert data we need to check that table is empty
@@ -84,7 +84,7 @@ class DB {
 
 		// get row from table
 		$data = $wpdb->get_row(
-			"SELECT dbtype, server, dbname, dbtable, dbuser, dbpass, user_id FROM {$table_name}",
+			"SELECT user_id FROM {$table_name}",
 			ARRAY_A, 0
 		);
 
@@ -94,32 +94,20 @@ class DB {
 			return $wpdb->insert(
 				$table_name,
 				array(
-					'dbtype' => $dbtype,
-					'server' => $server,
-					'dbname' => $dbname,
-					'dbtable' => $dbtable,
-					'dbuser' => $dbuser,
-					'dbpass' => $dbpass,
 					'user_id' => $user_id
 				),
-				array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+				array('%s')
 			);
 		} else {
 			// update row
 			return $wpdb->update(
 				$table_name,
 				array(
-					'dbtype' => $dbtype,
-					'server' => $server,
-					'dbname' => $dbname,
-					'dbtable' => $dbtable,
-					'dbuser' => $dbuser,
-					'dbpass' => $dbpass,
 					'user_id' => $user_id
 				),
 				array( 'id' => 1 ),
-				array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
-				);
+				array('%s')
+			);
 		}
 	}
 
