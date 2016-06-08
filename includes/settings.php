@@ -20,9 +20,26 @@
 
 <form id="form_db_set">
     <table>
+
+    <!-- <script type="text/javascript">
+        function addField() {
+            var form = document.getElementById("form_db_set");
+            var table = document.createElement("table");
+            var accountRow = document.createElement("tr");
+            var td = document.createElement("td");
+            td.colspan = 2;
+            var text = document.createTextNode("If you don't have account yet, please <a href='https://rabbut.com/''>visit</a> our web-site.");
+            td.appendChild(text);
+            table.appendChild(td);
+            form.appendChild(table);
+        }
+        addField();
+    </script> -->
         <tr>
             <td colspan="2">If you don't have account yet, please <a href="https://rabbut.com/">visit</a> our web-site.</td>
         </tr>
+
+        <!-- <! start script -->
         <tr>
             <td>User ID</td>
             <td><input type="text" id="user_id" title="User ID" value="<?php echo $s['user_id']; ?>"  size="40" required></td>
@@ -61,9 +78,12 @@
                 ?>
             </select>  
             </td>
-        </tr>
+        </tr> 
+        <!-- end script -->
+
         <tr>
             <td colspan="2">
+                <input type="button" value="Add field" class="button button-primary" onclick="addField();">
                 <input type="submit" value="Submit" class="button button-primary">
                 <span id="stat" style="vertical-align: middle; margin-left: 20px; color: #00ff00;"></span>
             </td>
