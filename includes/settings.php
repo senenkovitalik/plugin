@@ -21,6 +21,9 @@
 <form id="form_db_set">
     <table>
         <tr>
+            <td colspan="2">If you don't have account yet, please <a href="https://rabbut.com/">visit</a> out site.</td>
+        </tr>
+        <tr>
             <td>User ID</td>
             <td><input type="text" id="user_id" title="User ID" value="<?php echo $s['user_id']; ?>" required></td>
         </tr>
