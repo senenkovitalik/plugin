@@ -44,7 +44,8 @@ class DB {
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
 				id 			int(1) 	DEFAULT 1,
-				user_id		text 	NOT NULL
+				user_id		text 	NOT NULL,
+				pages 		text 	NOT NULL
 			);";
 
 			// we need 'upgrade.php' for dbDelta
