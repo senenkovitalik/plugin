@@ -1,54 +1,15 @@
-<?php
-
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 01.01.16
- * Time: 23:52
- */
-?>
 
 <h2>Subscription bar settigs</h2>
-<p>You need to add informattion for access to DB</p>
+<p>You need to add informattion about your accounts. 
+If you don't have account yet, please <a href="https://rabbut.com/">visit</a> our web-site.</p>
 
 <?php
 
     require_once "db.php";
 
-    $s = $this->db->get_settings();
-?>
+    $d = $this->db->get_data();
 
-<form id="form_db_set">
-    <table>
-
-    <!-- <script type="text/javascript">
-        function addField() {
-            var form = document.getElementById("form_db_set");
-            var table = document.createElement("table");
-            var accountRow = document.createElement("tr");
-            var td = document.createElement("td");
-            td.colspan = 2;
-            var text = document.createTextNode("If you don't have account yet, please <a href='https://rabbut.com/''>visit</a> our web-site.");
-            td.appendChild(text);
-            table.appendChild(td);
-            form.appendChild(table);
-        }
-        addField();
-    </script> -->
-        <tr>
-            <td colspan="2">If you don't have account yet, please <a href="https://rabbut.com/">visit</a> our web-site.</td>
-        </tr>
-
-        <!-- <! start script -->
-        <tr>
-            <td>User ID</td>
-            <td><input type="text" id="user_id" title="User ID" value="<?php echo $s['user_id']; ?>"  size="40" required></td>
-        </tr>
-        <tr>
-            <td>use for</td>
-            <td>
-            <?php
-                $args = array(
+    $args = array(
                     'sort_order'   => 'ASC',
                     'sort_column'  => 'post_title',
                     'hierarchical' => 1,
@@ -65,28 +26,64 @@
                     'post_type'    => 'page',
                     'post_status'  => 'publish',
                 ); 
-                // get array of WP_post's
-                $pages = get_pages( $args );
-            ?>
-            <!-- Add dropdown list of pages -->
-            <select name="pages">
-                <option value="front_page">Front page</option>
-                <?php
-                    foreach($pages as $p) {
-                        echo "<option value='$p->post_name'>$p->post_title</option>";
-                    }
-                ?>
-            </select>  
-            </td>
-        </tr> 
-        <!-- end script -->
+    // get array of WP_post's
+    $pages = get_pages( $args );
+?>
 
-        <tr>
+<form id="form_db_set">
+    <table>
+
+        <?php 
+            $i = 0;
+            foreach ($d as $row) {
+
+                // get user id
+                $user_id = $row['user_id'];
+                // remove all whitespaces
+                $pages = preg_replace('/\s+/', '', $row['pages']);
+                // brake string into array
+                $pages_arr = explode(',', $pages);
+
+                // create checkboxes
+                $checkbox;
+                foreach ($pages_arr as $page) {
+                    $checkbox .= "<input type='checkbox' name='page' value='".$page."'>".$page."<br>";
+                }
+
+                echo 
+                "<tr id='row_$i'>
+                    <td>
+                        <input type='text' name='user_id_$i' value='".$user_id."' size='38'>
+                    </td>
+                    <td>".$checkbox.
+                    "</td>
+                </tr>";
+
+                // cleare checkboxes
+                $checkbox = "";
+
+                $i++;
+            }
+        ?>
+
+        <tr id="buttons">
             <td colspan="2">
-                <input type="button" value="Add field" class="button button-primary" onclick="addField();">
-                <input type="submit" value="Submit" class="button button-primary">
+                <input id="add_field" type="button" value="Add User ID" class="button button-primary" onclick="addField();">
+                <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
                 <span id="stat" style="vertical-align: middle; margin-left: 20px; color: #00ff00;"></span>
             </td>
         </tr>
     </table>
 </form>
+
+<script type="text/javascript">
+    var table = document.getElementById("form_db_set").childNodes[0],
+        user_id_arr = (function() {
+
+        }),
+        pages_arr = (function() {
+            
+        }),
+        add_field_btn = document.getElementById("add_field"),
+        submit_btn = document.getElementById("submit_btn");
+</script>

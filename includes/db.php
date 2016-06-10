@@ -111,13 +111,16 @@ class DB {
 	 *
 	 * @return array|null|object|void
      */
-	function get_settings() {
+	function get_data() {
 
 		global $wpdb;
 
 		$table_name = $this->make_table_name();
 
-		return $wpdb->get_row( "SELECT * FROM {$table_name}", ARRAY_A, 0 );
+		// array of row 
+		$data = $wpdb->get_results("SELECT * FROM {$table_name};", ARRAY_A);
+
+		return $data;
 	}
 
 	/**
