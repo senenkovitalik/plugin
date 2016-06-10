@@ -31,7 +31,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 ?>
 
 <form id="form_db_set">
-    <table>
+    <table id="user_table">
 
         <?php 
             $i = 0;
@@ -77,13 +77,23 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 </form>
 
 <script type="text/javascript">
-    var table = document.getElementById("form_db_set").childNodes[0],
+    var table = document.getElementById("user_table"),
         user_id_arr = (function() {
+            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            var fields = [];
+            for(var i = 0; i<rows.length; i++) {
+                if(rows[i].id !== "buttons") {
+                    fields.push(rows[i].id);
+                }
+            }
 
-        }),
+            return fields;
+        })(),
         pages_arr = (function() {
             
-        }),
+        })(),
         add_field_btn = document.getElementById("add_field"),
         submit_btn = document.getElementById("submit_btn");
+
+        console.dir(user_id_arr);
 </script>
