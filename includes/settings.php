@@ -96,8 +96,11 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }  
 
         // user can add new account if there is unused pages
-        console.log(get_used_pages());
-        console.log(unused_pages());
+        console.log("unused", unused_pages());
+        console.log("used", get_used_pages());
+        // if(unused_pages().length === 0) {
+        //     return;
+        // }
 
         // user can add new account only previous is completely filled
             if(last !== 0) {
@@ -249,6 +252,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         var wp_pages = get_all_pages();
         var used_pages = get_used_pages();
         var unused = [];
+        var match;
+
+        // console.log("used", used_pages);
+        
 
         if(used_pages.length === 0) {
             for(var i=0; i<wp_pages.length; i++) {
@@ -258,12 +265,17 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }
 
         for(var i=0; i<wp_pages.length; i++) {
+            match = false;
             for(var j=0; j<used_pages.length; j++) {
+
                 if(wp_pages[i].post_name === used_pages[j]) {
+                    match = true;
                     break;
+                } else {
+                    match = false;
                 }
-                unused.push(wp_pages[i].post_name);
             }
+            if(!match) unused.push(wp_pages[i].post_name);
         }
 
         return unused;
