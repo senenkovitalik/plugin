@@ -98,6 +98,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             last = user_len;  // index of new field
         }  
 
+        // check previous row
+        // user can add new account only previous is filled
+        if(last !== 0) {
+            var prev_row = document.getElementById("row_"+(last-1));
+    
+            if(!check_row(prev_row)) {
+                return;
+            }
+        }
+
         var tr = table.insertRow(last);
         tr.id = "row_"+last;
 
@@ -138,7 +148,11 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
 
         tr.addEventListener("mouseenter", function() {
-                check_row(this)
+            
+        });
+
+        tr.addEventListener("mouseleave", function() {
+            
         });
 
         // add info about id's to user_id_arr, pages_arr
@@ -208,13 +222,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         for(var i=0; i<chbox.length; i++) {
             if(chbox[i].checked) {
                 ch = true;
+                break;
             } else {
                 ch = false;
             }
         }
 
         // if row empty or checkboxes not checked
-        if(td_id.value === "" && ch) {
+        // true - all fields are filled
+        // false - some fields are not filled
+        if(td_id.value !== "" && ch) {
             return true;
         } else {
             return false;
