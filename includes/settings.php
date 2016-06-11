@@ -96,11 +96,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }  
 
         // user can add new account if there is unused pages
-        console.log("unused", unused_pages());
-        console.log("used", get_used_pages());
-        // if(unused_pages().length === 0) {
-        //     return;
-        // }
+        var unused = unused_pages();
+        if(unused.length === 0) {
+            return;
+        }
 
         // user can add new account only previous is completely filled
             if(last !== 0) {
@@ -131,24 +130,15 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             var td_check = tr.insertCell(1);
             td_check.id = "td_"+last;
 
-            // array of WP_Posts
-            var p = get_all_pages();
-
-            // available WP_Posts
-            var aval = p;
-            for(var a in aval) {
-
-            }
-
-            for(var i=0; i<p.length; i++) {
+            for(var i=0; i<unused.length; i++) {
 
                 // create new <input> element
                 var input_ch = document.createElement("input");
                 input_ch.type = "checkbox";
-                input_ch.value =  p[i].post_name;
+                input_ch.value =  unused[i];
 
                 // create page title
-                var text = document.createTextNode(p[i].post_title);
+                var text = document.createTextNode(unused[i]);
                 var br = document.createElement("br");
 
                 td_check.appendChild(input_ch);
