@@ -77,20 +77,19 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     var table = document.getElementById("user_table"),
 
         // array of user_id input fields (id)
-        user_id_arr,
+        user_id_arr = get_user_ids(),
 
         // array of pages checkboxes (id)
-        pages_arr,
+        pages_arr = pages_array(),
 
         add_account = document.getElementById("add_account"),
         submit_btn = document.getElementById("submit_btn");
 
-        dis_enab_submit();
+    dis_enab_submit();
 
     // add event "onclick" to Add Acount button
     add_account.addEventListener("click", function() {
 
-        user_id_arr = get_user_ids();
         var user_len = user_id_arr.length;   // number of user_id's
         var last = 0;
 
@@ -116,7 +115,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         // second <td> with pages
             var td_check = tr.insertCell(1);
+            td_check.id = "td_"+last;
 
+            // array of WP_Posts
             var p = get_all_pages();
 
             for(var i=0; i<p.length; i++) {
@@ -126,6 +127,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 input_ch.type = "checkbox";
                 input_ch.value =  p[i].post_name;
 
+                // create page title
                 var text = document.createTextNode(p[i].post_title);
                 var br = document.createElement("br");
 
@@ -135,10 +137,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
 
         // add info about id's to user_id_arr, pages_arr
+        user_id_arr.push(tr.id);
+        pages_arr.push(td_check.id);
 
         dis_enab_submit();
+
+        // console.log(user_id_arr);
+        // console.log(pages_arr);
     });
 
+    // check to disable or enable submit button
     function dis_enab_submit() {
         // if there no user_id field then Submit button is disabled
         if(get_user_ids().length === 0) {
@@ -148,8 +156,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }
     }
 
+    // return array of id <tr> user_id 
     function get_user_ids() {
-        // rows array
+        
         var rows = table.getElementsByTagName("tr");
         var fields = [];
         
@@ -162,6 +171,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         return fields;
     }
 
+    // return array of id <td> pages
     function pages_array() {
         // array of <tr>
         var rows = table.getElementsByTagName("tr");
@@ -182,5 +192,5 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         return <?php echo json_encode($pages); ?>;
     }
 
-    get_all_pages();
+
 </script>
