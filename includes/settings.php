@@ -96,10 +96,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }  
 
         // user can add new account if there is unused pages
-        var unused = unused_pages();
-        if(unused.length === 0) {
-            return;
-        }
+            var unused = unused_pages();
+            if(unused.length === 0) {
+                return;
+            }
 
         // user can add new account only previous is completely filled
             if(last !== 0) {
@@ -110,8 +110,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
             }
 
-        var tr = table.insertRow(last);
-        tr.id = "row_"+last;
+        // insert row 
+            var tr = table.insertRow(last);
+            tr.id = "row_"+last;
 
         // first <td> with user_id
             var td_id = tr.insertCell(0);
@@ -148,10 +149,20 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         tr.addEventListener("mouseenter", function() {
             // show remove button
+            var td_remove = this.insertCell(2);
+            td_remove.width = "70px";
+
+            var button = document.createElement("input");
+            button.type = "button";
+            button.value = "Remove";
+            button.class="button button-primary";
+
+            td_remove.appendChild(button);
         });
 
         tr.addEventListener("mouseleave", function() {
             // hide remove button
+            this.removeChild(this.getElementsByTagName("td")[2]);
         });
 
         // add info about id's to user_id_arr, pages_arr
@@ -244,9 +255,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         var unused = [];
         var match;
 
-        // console.log("used", used_pages);
-        
-
         if(used_pages.length === 0) {
             for(var i=0; i<wp_pages.length; i++) {
                 unused.push(wp_pages[i].post_name);
@@ -257,7 +265,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         for(var i=0; i<wp_pages.length; i++) {
             match = false;
             for(var j=0; j<used_pages.length; j++) {
-
                 if(wp_pages[i].post_name === used_pages[j]) {
                     match = true;
                     break;
@@ -267,7 +274,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
             if(!match) unused.push(wp_pages[i].post_name);
         }
-
         return unused;
     }
 
