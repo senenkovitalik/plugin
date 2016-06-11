@@ -80,8 +80,8 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         // array of user_id input fields (id)
         user_id_arr = get_user_ids(),
 
-        // array of pages checkboxes (id)
-        pages_arr = pages_array(),
+        // array of used pages
+        used_pages,
 
         add_account = document.getElementById("add_account"),
         submit_btn = document.getElementById("submit_btn");
@@ -130,6 +130,12 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             // array of WP_Posts
             var p = get_all_pages();
 
+            // available WP_Posts
+            var aval = p;
+            for(var a in aval) {
+
+            }
+
             for(var i=0; i<p.length; i++) {
 
                 // create new <input> element
@@ -158,8 +164,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         user_id_arr.push(tr.id);
 
         dis_enab_submit();
-
-        console.log(pages_arr);
     });
 
     // check to disable or enable submit button
@@ -190,6 +194,23 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     // return JSON of all WP_post's (pages)
     function get_all_pages() {
         return <?php echo json_encode($pages); ?>;
+    }
+
+    // return array of used pages
+    function get_used_pages() {
+        var row, td, input, fields = [];
+        for(var tr in user_id_arr) {
+            row = document.getElementById(user_id_arr[tr]);
+            td = row.getElementsByTagName("td")[1];
+            input = td.getElementsByTagName("input");
+            for(var i=0; i<input.length; i++) {
+                if(input[i].checked === true) {
+                    fields.push(input[i].value);
+                }
+            }
+        }
+
+        return fields;
     }
 
     // check that all field of row are filled
