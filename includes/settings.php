@@ -55,7 +55,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                     <td>
                         <input type='text' name='user_id_$i' value='".$user_id."' size='38'>
                     </td>
-                    <td>".$checkbox.
+                    <td id='td_$i'>".$checkbox.
                     "</td>
                 </tr>";
 
@@ -78,7 +78,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
 <script type="text/javascript">
     var table = document.getElementById("user_table"),
+
+        // array of user_id input fields (id)
         user_id_arr = (function() {
+            // rows array
             var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
             var fields = [];
             for(var i = 0; i<rows.length; i++) {
@@ -89,11 +92,28 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
             return fields;
         })(),
+
+        // array of pages checkboxes (id)
         pages_arr = (function() {
-            
+            // rows array
+            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            var fields = [];
+
+            for(var i = 0; i<rows.length; i++) {
+
+                if(rows[i].id !== "buttons") {
+
+                    var td = rows[i].getElementsByTagName("td");
+                    fields.push(td[1].id);
+                }
+            }
+
+            return fields;
         })(),
+
         add_field_btn = document.getElementById("add_field"),
         submit_btn = document.getElementById("submit_btn");
 
-        console.dir(user_id_arr);
+        console.log(user_id_arr);
+        console.log(pages_arr);
 </script>
