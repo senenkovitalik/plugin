@@ -88,86 +88,95 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         dis_enab_submit();
 
         // add event "onclick" to Add Acount button
-        add_account.addEventListener("click", function() {
+    add_account.addEventListener("click", function() {
 
-            user_id_arr = get_user_ids();
-            var user_len = user_id_arr.length;   // number of user_id's
-            var last = 0;
+        user_id_arr = get_user_ids();
+        var user_len = user_id_arr.length;   // number of user_id's
+        var last = 0;
 
-            if(user_len !== 0) {
-                last = user_len;  // index of new field
-            }  
+        if(user_len !== 0) {
+            last = user_len;  // index of new field
+        }  
 
-            var tr = table.insertRow(last);
-            tr.id = "row_"+last;
+        var tr = table.insertRow(last);
+        tr.id = "row_"+last;
 
-            // first <td> with user_id
-                var td_id = tr.insertCell(0);
+        // first <td> with user_id
+            var td_id = tr.insertCell(0);
 
-                // input field for user_id
-                var input_id = document.createElement("input");
-                input_id.type = "text";
-                input_id.name = "user_id_"+last;
-                input_id.value = "";
-                input_id.size = 38;
+            // input field for user_id
+            var input_id = document.createElement("input");
+            input_id.type = "text";
+            input_id.name = "user_id_"+last;
+            input_id.value = "";
+            input_id.size = 38;
 
-                // add <td> to <tr>
-                td_id.appendChild(input_id);
+            // add <td> to <tr>
+            td_id.appendChild(input_id);
 
-            // second <td> with pages
-                var td_check = tr.insertCell(1);
+        // second <td> with pages
+            var td_check = tr.insertCell(1);
 
-                var input_ch = document.createElement("input");
-                input_ch.type = "checkbox";
-                input_ch.name = "page";
-                input_ch.value = "some page";       // !!!!!!!!!!!!!!!!!
+            var input_ch = document.createElement("input");
+            input_ch.type = "checkbox";
+            input_ch.name = "page";
+            input_ch.value = "some page";       // !!!!!!!!!!!!!!!!!
 
-                // text to checkbox
-                var text = document.createTextNode("some page");
+            // text to checkbox
+            var text = document.createTextNode("some page");
 
-                td_check.appendChild(input_ch);
-                td_check.appendChild(text);
+            td_check.appendChild(input_ch);
+            td_check.appendChild(text);
 
-            // add info about id's to user_id_arr, pages_arr
+        // add info about id's to user_id_arr, pages_arr
 
-            dis_enab_submit();
-        });
+        dis_enab_submit();
+    });
 
-        function dis_enab_submit() {
-            // if there no user_id field then Submit button is disabled
-            if(get_user_ids().length === 0) {
-                submit_btn.disabled = "disabled";
-            } else {
-                submit_btn.disabled = false;
-            }
+    function dis_enab_submit() {
+        // if there no user_id field then Submit button is disabled
+        if(get_user_ids().length === 0) {
+            submit_btn.disabled = "disabled";
+        } else {
+            submit_btn.disabled = false;
         }
+    }
 
-        function get_user_ids() {
-            // rows array
-            var rows = table.getElementsByTagName("tr");
-            var fields = [];
-            
-            if(rows.length !== 0) {
-                for(var i = 0; i<rows.length; i++) {
-                    fields.push(rows[i].id);
-                }
-            }
-
-            return fields;
-        }
-
-        function pages_array() {
-            // array of <tr>
-            var rows = table.getElementsByTagName("tr");
-            // array to return
-            var fields = [];
-
+    function get_user_ids() {
+        // rows array
+        var rows = table.getElementsByTagName("tr");
+        var fields = [];
+        
+        if(rows.length !== 0) {
             for(var i = 0; i<rows.length; i++) {
-                // array of <td>
-                var td = rows[i].getElementsByTagName("td");
-                fields.push(td[1].id);
+                fields.push(rows[i].id);
             }
-
-            return fields;
         }
+
+        return fields;
+    }
+
+    function pages_array() {
+        // array of <tr>
+        var rows = table.getElementsByTagName("tr");
+        // array to return
+        var fields = [];
+
+        for(var i = 0; i<rows.length; i++) {
+            // array of <td>
+            var td = rows[i].getElementsByTagName("td");
+            fields.push(td[1].id);
+        }
+
+        return fields;
+    }
+
+    function get_all_pages() {
+        var pages = <?php echo json_encode($pages); ?>;
+        for(var p in pages) {
+            console.log(pages[p].post_name+" "+pages[p].post_title);
+        }
+    }
+
+    get_all_pages();
 </script>
