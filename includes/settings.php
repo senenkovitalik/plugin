@@ -98,15 +98,14 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             last = user_len;  // index of new field
         }  
 
-        // check previous row
-        // user can add new account only previous is filled
-        if(last !== 0) {
-            var prev_row = document.getElementById("row_"+(last-1));
-    
-            if(!check_row(prev_row)) {
-                return;
+        // user can add new account only previous is completely filled
+            if(last !== 0) {
+                var prev_row = document.getElementById("row_"+(last-1));
+        
+                if(!check_row(prev_row)) {
+                    return;
+                }
             }
-        }
 
         var tr = table.insertRow(last);
         tr.id = "row_"+last;
@@ -148,18 +147,19 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
 
         tr.addEventListener("mouseenter", function() {
-            
+            // show remove button
         });
 
         tr.addEventListener("mouseleave", function() {
-            
+            // hide remove button
         });
 
         // add info about id's to user_id_arr, pages_arr
         user_id_arr.push(tr.id);
-        pages_arr.push(td_check.id);
 
         dis_enab_submit();
+
+        console.log(pages_arr);
     });
 
     // check to disable or enable submit button
@@ -182,22 +182,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             for(var i = 0; i<rows.length; i++) {
                 fields.push(rows[i].id);
             }
-        }
-
-        return fields;
-    }
-
-    // return array of id <td> pages
-    function pages_array() {
-        // array of <tr>
-        var rows = table.getElementsByTagName("tr");
-        // array to return
-        var fields = [];
-
-        for(var i = 0; i<rows.length; i++) {
-            // array of <td>
-            var td = rows[i].getElementsByTagName("td");
-            fields.push(td[1].id);
         }
 
         return fields;
