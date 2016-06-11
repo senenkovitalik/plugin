@@ -65,27 +65,25 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 $i++;
             }
         ?>
-
-        <tr id="buttons">
-            <td colspan="2">
-                <input id="add_field" type="button" value="Add User ID" class="button button-primary" onclick="addField();">
-                <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
-                <span id="stat" style="vertical-align: middle; margin-left: 20px; color: #00ff00;"></span>
-            </td>
-        </tr>
     </table>
+
+    <input id="add_account" type="button" value="Add User ID" class="button button-primary">
+    <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
+    <span id="stat" style="vertical-align: middle; margin-left: 20px; color: #00ff00;"></span>
 </form>
 
 <script type="text/javascript">
     var table = document.getElementById("user_table"),
+        tbody = table.getElementsByTagName("tbody")[0];
 
         // array of user_id input fields (id)
         user_id_arr = (function() {
             // rows array
-            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            var rows = table.getElementsByTagName("tr");
             var fields = [];
-            for(var i = 0; i<rows.length; i++) {
-                if(rows[i].id !== "buttons") {
+            
+            if(rows.length !== 0) {
+                for(var i = 0; i<rows.length; i++) {
                     fields.push(rows[i].id);
                 }
             }
@@ -95,25 +93,76 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         // array of pages checkboxes (id)
         pages_arr = (function() {
-            // rows array
-            var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            // array of <tr>
+            var rows = table.getElementsByTagName("tr");
+            // array to return
             var fields = [];
 
             for(var i = 0; i<rows.length; i++) {
-
-                if(rows[i].id !== "buttons") {
-
-                    var td = rows[i].getElementsByTagName("td");
-                    fields.push(td[1].id);
-                }
+                // array of <td>
+                var td = rows[i].getElementsByTagName("td");
+                fields.push(td[1].id);
             }
 
             return fields;
         })(),
 
-        add_field_btn = document.getElementById("add_field"),
+        add_account = document.getElementById("add_account"),
         submit_btn = document.getElementById("submit_btn");
 
-        console.log(user_id_arr);
-        console.log(pages_arr);
+        dis_enab_submit();
+
+        // add event "onclick" to Add Acount button
+        add_account.addEventListener("click", function() {
+
+            // event.preventDefault();
+
+            var user_len = user_id_arr.length;   // number of user_id's
+            var last = 0;
+
+            if(user_len !== 0) {
+                last = user_len+1;  // index of new field
+            }  
+
+            var tr = table.insertRow(last);
+            tr.id = "row_"+last;
+
+            // first <td> with user_id
+            var td_id = tr.insertCell(0);
+
+            // input field for user_id
+            var input_id = document.createElement("input");
+            input_id.type = "text";
+            input_id.name = "user_id_"+last;
+            input_id.value = "";
+            input_id.size = 38;
+
+            // add <td> to <tr>
+            td_id.appendChild(input_id);
+
+            // second <td> with pages
+            var td_check = tr.insertCell(1);
+
+            var input_ch = document.createElement("input");
+            input_ch.type = "checkbox";
+            input_ch.name = "page";
+            input_ch.value = "some page";       // !!!!!!!!!!!!!!!!!
+
+            // text to checkbox
+            var text = document.createTextNode("some page");
+
+            td_check.appendChild(input_ch);
+            td_check.appendChild(text);
+
+            dis_enab_submit();
+        });
+
+        function dis_enab_submit() {
+            // if there no user_id field then Submit button is disabled
+            if(user_id_arr.length === 0) {
+                submit_btn.disabled = "disabled";
+            } else {
+                submit_btn.disabled = false;
+            }
+        }
 </script>
