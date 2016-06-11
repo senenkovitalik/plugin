@@ -150,12 +150,17 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         tr.addEventListener("mouseenter", function() {
             // show remove button
             var td_remove = this.insertCell(2);
-            td_remove.width = "70px";
+            // td_remove.width = "70px";
 
             var button = document.createElement("input");
             button.type = "button";
             button.value = "Remove";
             button.class="button button-primary";
+
+            button.onclick = (function() {
+                tr.parentNode.removeChild(tr);
+                // remove <tr> from user_id_arr !!!!!!!!!!! 
+            });
 
             td_remove.appendChild(button);
         });
