@@ -30,6 +30,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     $pages = get_pages( $args );
 ?>
 
+
 <form id="form_db_set">
     <table id="user_table">
 
@@ -141,9 +142,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         pages_arr.push(td_check.id);
 
         dis_enab_submit();
-
-        // console.log(user_id_arr);
-        // console.log(pages_arr);
     });
 
     // check to disable or enable submit button
@@ -192,5 +190,31 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         return <?php echo json_encode($pages); ?>;
     }
 
+    // check that all field of row are filled
+    // return true|false
+    function check_row(row_id) {
+
+        var tr = document.getElementById(row_id);
+        var td = row.getElementsByTagName("td")[1];
+        // array of input fields (checkboxes)
+        var checkboxes = td.getElementsByTagName("input");
+
+        var ch = false;
+        // check that all checkboxes are checked or not
+        for(var i=0; i<checkboxes.length; i++) {
+            if(check[i].checked) {
+                ch = true;
+            } else {
+                ch = false;
+            }
+        }
+
+        // if row empty or checkboxes not checked
+        if(tr.value === "" || ch) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 </script>
