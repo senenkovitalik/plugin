@@ -80,20 +80,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         user_id_arr,
 
         // array of pages checkboxes (id)
-        pages_arr = (function() {
-            // array of <tr>
-            var rows = table.getElementsByTagName("tr");
-            // array to return
-            var fields = [];
-
-            for(var i = 0; i<rows.length; i++) {
-                // array of <td>
-                var td = rows[i].getElementsByTagName("td");
-                fields.push(td[1].id);
-            }
-
-            return fields;
-        })(),
+        pages_arr,
 
         add_account = document.getElementById("add_account"),
         submit_btn = document.getElementById("submit_btn");
@@ -103,7 +90,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         // add event "onclick" to Add Acount button
         add_account.addEventListener("click", function() {
 
-            // event.preventDefault();
             user_id_arr = get_user_ids();
             var user_len = user_id_arr.length;   // number of user_id's
             var last = 0;
@@ -112,7 +98,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 last = user_len;  // index of new field
             }  
 
-            console.log(last);
             var tr = table.insertRow(last);
             tr.id = "row_"+last;
 
@@ -171,4 +156,18 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             return fields;
         }
 
+        function pages_array() {
+            // array of <tr>
+            var rows = table.getElementsByTagName("tr");
+            // array to return
+            var fields = [];
+
+            for(var i = 0; i<rows.length; i++) {
+                // array of <td>
+                var td = rows[i].getElementsByTagName("td");
+                fields.push(td[1].id);
+            }
+
+            return fields;
+        }
 </script>
