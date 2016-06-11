@@ -87,7 +87,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         dis_enab_submit();
 
-        // add event "onclick" to Add Acount button
+    // add event "onclick" to Add Acount button
     add_account.addEventListener("click", function() {
 
         user_id_arr = get_user_ids();
@@ -117,16 +117,22 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         // second <td> with pages
             var td_check = tr.insertCell(1);
 
-            var input_ch = document.createElement("input");
-            input_ch.type = "checkbox";
-            input_ch.name = "page";
-            input_ch.value = "some page";       // !!!!!!!!!!!!!!!!!
+            var p = get_all_pages();
 
-            // text to checkbox
-            var text = document.createTextNode("some page");
+            for(var i=0; i<p.length; i++) {
 
-            td_check.appendChild(input_ch);
-            td_check.appendChild(text);
+                // create new <input> element
+                var input_ch = document.createElement("input");
+                input_ch.type = "checkbox";
+                input_ch.value =  p[i].post_name;
+
+                var text = document.createTextNode(p[i].post_title);
+                var br = document.createElement("br");
+
+                td_check.appendChild(input_ch);
+                td_check.appendChild(text);
+                td_check.appendChild(br);
+            }
 
         // add info about id's to user_id_arr, pages_arr
 
@@ -171,11 +177,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         return fields;
     }
 
+    // return JSON of all WP_post's (pages)
     function get_all_pages() {
-        var pages = <?php echo json_encode($pages); ?>;
-        for(var p in pages) {
-            console.log(pages[p].post_name+" "+pages[p].post_title);
-        }
+        return <?php echo json_encode($pages); ?>;
     }
 
     get_all_pages();
