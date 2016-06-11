@@ -137,6 +137,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 td_check.appendChild(br);
             }
 
+        tr.addEventListener("mouseenter", function() {
+                check_row(this)
+        });
+
         // add info about id's to user_id_arr, pages_arr
         user_id_arr.push(tr.id);
         pages_arr.push(td_check.id);
@@ -192,17 +196,17 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     // check that all field of row are filled
     // return true|false
-    function check_row(row_id) {
+    function check_row(row) {
 
-        var tr = document.getElementById(row_id);
+        var td_id = row.getElementsByTagName("td")[0].getElementsByTagName("input")[0];
         var td = row.getElementsByTagName("td")[1];
         // array of input fields (checkboxes)
-        var checkboxes = td.getElementsByTagName("input");
+        var chbox = td.getElementsByTagName("input");
 
         var ch = false;
         // check that all checkboxes are checked or not
-        for(var i=0; i<checkboxes.length; i++) {
-            if(check[i].checked) {
+        for(var i=0; i<chbox.length; i++) {
+            if(chbox[i].checked) {
                 ch = true;
             } else {
                 ch = false;
@@ -210,10 +214,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }
 
         // if row empty or checkboxes not checked
-        if(tr.value === "" || ch) {
-            return false;
-        } else {
+        if(td_id.value === "" && ch) {
             return true;
+        } else {
+            return false;
         }
     }
 
