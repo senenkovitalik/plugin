@@ -52,11 +52,11 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
 
                 echo 
-                "<tr id='row_$i'>
+                "<tr>
                     <td>
                         <input type='text' name='user_id_$i' value='".$user_id."' size='38'>
                     </td>
-                    <td id='td_$i'>".$checkbox.
+                    <td>".$checkbox.
                     "</td>
                 </tr>";
 
@@ -125,7 +125,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         // second <td> with pages
             var td_check = tr.insertCell(1);
-            td_check.id = "td_"+last;
 
             for(var i=0; i<unused.length; i++) {
 
