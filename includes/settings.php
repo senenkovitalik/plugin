@@ -84,11 +84,11 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     // add event "onclick" to Add Acount button
     add_account.addEventListener("click", function() {
 
-        var user_len = get_user_ids().length;   // number of user_id's
+        var row_count = table.rows.length;   // number of rows
         var last = 0;
 
-        if(user_len !== 0) {
-            last = user_len;  // index of new field
+        if(row_count !== 0) {
+            last = row_count;  // index of new field
         }  
 
         // user can add new account if there is unused pages
@@ -98,8 +98,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
 
         // user can add new account only previous is completely filled
+        // prev_row it's same as last row, cause "current row" is not added yet
             if(last !== 0) {
-                var prev_row = document.getElementById("row_"+(last-1));
+                var prev_row = table.rows[row_count-1];
         
                 if(!check_row(prev_row)) {
                     return;
@@ -108,7 +109,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         // insert row 
             var tr = table.insertRow(last);
-            tr.id = "row_"+last;
 
         // first <td> with user_id
             var td_id = tr.insertCell(0);
@@ -146,7 +146,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         tr.addEventListener("mouseenter", function() {
             // show remove button
             var td_remove = this.insertCell(2);
-            // td_remove.width = "70px";
 
             var button = document.createElement("input");
             button.type = "button";
@@ -155,7 +154,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
             button.onclick = (function() {
                 tr.parentNode.removeChild(tr);
-                // remove <tr> from user_id_arr !!!!!!!!!!! 
             });
 
             td_remove.appendChild(button);
@@ -204,18 +202,20 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     // return array of used pages
     function get_used_pages() {
-        var row, td, input, id_arr = get_user_ids(), fields = [];
-        for(var tr in id_arr) {
-            row = document.getElementById(id_arr[tr]);
+        var row, td, input, id_arr = table.rows, fields = [];
+        if(id_arr.length === 0) {
+            return fields;
+        }
+        for(var i=0; i<id_arr.length; i++) {
+            row = id_arr[i];
             td = row.getElementsByTagName("td")[1];
             input = td.getElementsByTagName("input");
-            for(var i=0; i<input.length; i++) {
-                if(input[i].checked === true) {
-                    fields.push(input[i].value);
+            for(var j=0; j<input.length; j++) {
+                if(input[j].checked === true) {
+                    fields.push(input[j].value);
                 }
             }
         }
-
         return fields;
     }
 
