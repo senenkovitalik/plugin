@@ -117,4 +117,26 @@ class DB {
 		$sql = "DROP TABLE {$table}";
 		$wpdb->query( $sql );
 	}
+
+	// get user_id value assigned to some page
+	function find_user_id($page) {
+
+		$data = $this->get_data();
+
+		foreach ($data as $row) {
+
+            // remove all whitespaces
+            $pages = preg_replace('/\s+/', '', $row['pages']);
+            // brake string into array
+            $pages_arr = explode(',', $pages);
+
+            foreach ($pages_arr as $p) {
+            	// return $p ." ". $page;
+                if($p === $page) {
+                	return $row['user_id'];
+                }
+            }
+        }
+        return "";
+	}
 }

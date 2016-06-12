@@ -43,6 +43,9 @@ class SubscriptionBar {
 		// admin settings page
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
 
+		// add JS to pages
+		add_action('wp_head', array( $this, 'insert_script'));
+
 		$this->db = $db;
 	}
 
@@ -85,6 +88,21 @@ class SubscriptionBar {
 			'subscription_bar', 
 			array( $this, 'show_settings_page')
 			);
+	}
+
+	function insert_script() {
+
+		// current post name
+		$page = get_post()->post_name;
+
+		// find user_id by post name
+		$id = $this->db->find_user_id($page);
+
+		$output = 
+		"<script> 
+			alert('user-data-id: $id');
+		</script>";
+		echo $output;
 	}
 
 	/**
