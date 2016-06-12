@@ -36,20 +36,9 @@ class SubscriptionBar {
 
 	public function __construct( DB $db ) {
 
-		// add theme CSS files
-	 	add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ) );
-
-		// add theme JS file
-		add_action( 'wp_enqueue_scripts', array( $this, 'add_js'));
-
 		// ajax admin
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
 		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
-
-		// ajax theme
-		add_action( 'wp_enqueue_scripts', array( $this, 'theme_enqueue_ajax' ) );
-		add_action( 'wp_ajax_action', array( $this, 'theme_action_callback' ) );
-		add_action( 'wp_ajax_nopriv_action', array( $this, 'theme_action_callback' ) );
 
 		// admin settings page
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
@@ -67,50 +56,11 @@ class SubscriptionBar {
 	}
 
 	/**
-	 * Register CSS files
-     */
-	function add_styles() {
-		wp_register_style( 'bar-theme-style', plugins_url( '/assets/css/style.css', __FILE__ ) );
-		wp_enqueue_style( 'bar-theme-style' );
-	}
-
-	/**
-	 *	Add JavaScript file
-     */
-	function add_js() {
-		wp_enqueue_script( 'bar-theme-bar', plugins_url( '/assets/js/bar.js', __FILE__ ), array('jquery') );
-	}
-
-	/**
 	 * Add JS to admin page for AJAX
      */
 	function admin_enqueue_ajax() {
 		wp_enqueue_script( 'bar-admin-ajax', plugins_url( '/assets/js/admin_ajax.js', __FILE__), array('jquery') );
 		wp_localize_script( 'bar-admin-ajax', 'admin_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-	}
-
-	/**
-	 *	Add JS file, and pass path to 'admin-ajax.php' to them
-	 */
-	function theme_enqueue_ajax() {
-		wp_enqueue_script( 'bar-ajax-script', plugins_url( '/assets/js/ajax.js', __FILE__), array('jquery') );
-		wp_localize_script( 'bar-ajax-script', 'svi_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-	}
-
-	/**
-	 *	Insert user data to DB table and return response
-     */
-	function theme_action_callback() {
-
-		$username = $_POST['username'];
-		$email = $_POST['email'];
-
-		$status = $this->db->insert_user_data( $username, $email );
-
-		// response to ajax.js
-		echo $status;
-
-		wp_die();
 	}
 
 	/**
@@ -120,20 +70,6 @@ class SubscriptionBar {
 
 		$data = $_POST['data'];
 		$this->db->save_settings( $data );
-
-		
-
-		// $status = $this->db->save_settings( $user_id, $pages );
-
-		// if ( $status === false ) {
-		// 	echo "Some problems occur";
-		// } else if ( $status === 0) {
-		// 	echo "Nothing update";
-		// } else if ( $status === true) {
-		// 	echo "Your data successfully saved.";
-		// } else {
-		// 	echo "Your data successfully updated.";
-		// }
 
 		wp_die();
 	}

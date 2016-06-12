@@ -106,59 +106,6 @@ class DB {
 	}
 
 	/**
-	 * Insert username, email to DB table
-	 *
-	 * @param $username
-	 * @param $email
-	 * @return string
-	 */
-	public function insert_user_data($username, $email ) {
-
-		global $wpdb;
-
-		$table = $this->make_table_name();
-
-		//get data from WP DB
-		$data = $wpdb->get_row(
-			"SELECT dbtype, server, dbname, dbtable, dbuser, dbpass, user_id FROM {$table}",
-			ARRAY_A, 0
-		);
-
-		// create connection to another DB
-		$conn = null;
-		try {
-			$conn = new PDO(
-				"{$data['dbtype']}:host={$data['server']};dbname={$data['dbname']}",
-				$data['dbuser'],
-				$data['dbpass']);
-			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		} catch (PDOException $e) {
-			return "Oops! Some problems with DB.";
-		}
-
-		// check that email not already exist
-		$sql = "SELECT email FROM {$data['dbtable']} WHERE email='".$email."'";
-		$rowCount = $conn->query( $sql )->rowCount();
-
-		if( $rowCount == 0 ) {
-			$sql = "INSERT INTO {$data['dbtable']} (username, email) VALUES ( '".$username."', '".$email."' )";
-			try {
-				// insert data
-				$conn->exec($sql);
-			} catch ( PDOException $e) {
-				return "Oops! Impossible to insert information";
-			}
-		} else {
-			return "Oops! This email already exist.";
-		}
-
-		// close connection to DB
-		$conn = null;
-
-		return "Your data has been successfully saved.";
-	}
-
-	/**
 	 *	Drop table before uninstall.
      */
 	public function drop_table() {
