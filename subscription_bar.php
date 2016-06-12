@@ -44,7 +44,7 @@ class SubscriptionBar {
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
 
 		// add JS to pages
-		add_action('wp_head', array( $this, 'insert_script'));
+		add_action('wp_footer', array( $this, 'insert_script'));
 
 		$this->db = $db;
 	}
@@ -100,7 +100,11 @@ class SubscriptionBar {
 
 		$output = 
 		"<script> 
-			alert('user-data-id: $id');
+			var body = document.getElementsByTagName('body')[0];
+			var script = document.createElement('script');
+			var text = document.createTextNode('$id');
+			script.appendChild(text);
+			body.insertBefore(script, body.childNodes[0]);
 		</script>";
 		echo $output;
 	}
