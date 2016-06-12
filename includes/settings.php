@@ -3,39 +3,16 @@
 <p>You need to add informattion about your accounts. 
 If you don't have account yet, please <a href="https://rabbut.com/">visit</a> our web-site.</p>
 
-<?php
-
-    require_once "db.php";
-
-    $d = $this->db->get_data();
-
-    $args = array(
-                    'sort_order'   => 'ASC',
-                    'sort_column'  => 'post_title',
-                    'hierarchical' => 1,
-                    'exclude'      => '',
-                    'include'      => '',
-                    'meta_key'     => '',
-                    'meta_value'   => '',
-                    'authors'      => '',
-                    'child_of'     => 0,
-                    'parent'       => -1,
-                    'exclude_tree' => '',
-                    'number'       => '',
-                    'offset'       => 0,
-                    'post_type'    => 'page',
-                    'post_status'  => 'publish',
-                ); 
-    // get array of WP_post's
-    $pages = get_pages( $args );
-?>
-
-
 <form id="form_db_set">
     <table id="user_table">
 
         <?php 
+
+            require_once "db.php";
+
+            $d = $this->db->get_data();
             $i = 0;
+
             foreach ($d as $row) {
 
                 // get user id
@@ -181,6 +158,27 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     // return JSON of all WP_post's (pages)
     function get_all_pages() {
+        <?php 
+            $args = array(
+                        'sort_order'   => 'ASC',
+                        'sort_column'  => 'post_title',
+                        'hierarchical' => 1,
+                        'exclude'      => '',
+                        'include'      => '',
+                        'meta_key'     => '',
+                        'meta_value'   => '',
+                        'authors'      => '',
+                        'child_of'     => 0,
+                        'parent'       => -1,
+                        'exclude_tree' => '',
+                        'number'       => '',
+                        'offset'       => 0,
+                        'post_type'    => 'page',
+                        'post_status'  => 'publish',
+                    ); 
+            // get array of WP_post's
+            $pages = get_pages( $args );
+        ?>
         return <?php echo json_encode($pages); ?>;
     }
 
