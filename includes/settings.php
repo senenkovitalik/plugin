@@ -48,7 +48,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 // create checkboxes
                 $checkbox;
                 foreach ($pages_arr as $page) {
-                    $checkbox .= "<input type='checkbox' name='page' value='".$page."'>".$page."<br>";
+                    if($page !== "") {
+                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked>".$page."<br>";
+                    }
                 }
 
                 echo 
