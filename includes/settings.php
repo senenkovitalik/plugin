@@ -60,7 +60,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                     "</td>
                 </tr>";
 
-                // cleare checkboxes
+                // clear checkboxes
                 $checkbox = "";
 
                 $i++;
@@ -70,7 +70,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     <input id="add_account" type="button" value="Add User ID" class="button button-primary">
     <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
-    <span id="stat" style="vertical-align: middle; margin-left: 20px; color: #00ff00;"></span>
+    <span id="stat" style="vertical-align: middle; margin-left: 20px;"></span>
 </form>
 
 <script type="text/javascript">

@@ -118,19 +118,32 @@ class SubscriptionBar {
      */
 	function admin_action_callback() {
 
-		$user_id = $_POST['user_id'];
+		$json = $_POST['data'];
 
-		$status = $this->db->save_settings( $user_id );
+		$pages = "";
 
-		if ( $status === false ) {
-			echo "Some problems occur";
-		} else if ( $status === 0) {
-			echo "Nothing update";
-		} else if ( $status === true) {
-			echo "Your data successfully saved.";
-		} else {
-			echo "Your data successfully updated.";
+		for ($i=0; $i<count($json); $i++) { 
+			$user_id = $json[$i]['user_id'];
+			foreach ($json[$i]['pages'] as $p) {
+				$pages .= $p.","; 
+			}
+
+			$this->db->save_settings( $user_id, $pages );
+
+			$pages = "";
 		}
+
+		// $status = $this->db->save_settings( $user_id, $pages );
+
+		// if ( $status === false ) {
+		// 	echo "Some problems occur";
+		// } else if ( $status === 0) {
+		// 	echo "Nothing update";
+		// } else if ( $status === true) {
+		// 	echo "Your data successfully saved.";
+		// } else {
+		// 	echo "Your data successfully updated.";
+		// }
 
 		wp_die();
 	}

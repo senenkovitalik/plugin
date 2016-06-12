@@ -56,52 +56,35 @@ class DB {
 		}
 	}
 
-	/**
-	 * Save settings into WP DB for connection to another DB
-	 *
-	 * @param $dbtype
-	 * @param $server
-	 * @param $dbname
-	 * @param $dbtable
-	 * @param $dbuser
-	 * @param $dbpass
-	 * @return false|int
-     */
-	function save_settings($user_id) {
-
-		// this table must have only one row
-		// before insert data we need to check that table is empty
-		// if not, we need to update existing row
+	// Dave user id's
+	function save_settings($user_id, $pages) {
 
 		global $wpdb;
 
+		// get table name 
 		$table_name = $this->make_table_name();
 
-		// get row from table
-		$data = $wpdb->get_row(
-			"SELECT user_id FROM {$table_name}",
-			ARRAY_A, 0
-		);
+		// check for equal row
+		$id = $wpdb->get_var(($wpdb->prepare("SELECT user_id FROM {$table_name} WHERE user_id={$user_id};")));
 
-		// if table empty
-		if ($data == null) {
-			// insert existing row
-			return $wpdb->insert(
+		// if row already yet in DB - update, if not - insert
+		if($user_id === $id) {
+			$wpdb->update(
 				$table_name,
 				array(
-					'user_id' => $user_id
+					'user_id' => $user_id,
+					'pages' => $pages
 				),
-				array('%s')
+				array('%s', '%s')
 			);
 		} else {
-			// update row
-			return $wpdb->update(
+			$wpdb->insert(
 				$table_name,
 				array(
-					'user_id' => $user_id
+					'user_id' => $user_id,
+					'pages' => $pages
 				),
-				array( 'id' => 1 ),
-				array('%s')
+				array('%s', '%s')
 			);
 		}
 	}
