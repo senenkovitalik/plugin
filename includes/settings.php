@@ -76,10 +76,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 <script type="text/javascript">
 
     var table = document.getElementById("user_table"),
-
-        // array of user_id input fields (id)
-        user_id_arr = get_user_ids(),
-
         add_account = document.getElementById("add_account"),
         submit_btn = document.getElementById("submit_btn");
 
@@ -88,7 +84,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     // add event "onclick" to Add Acount button
     add_account.addEventListener("click", function() {
 
-        var user_len = user_id_arr.length;   // number of user_id's
+        var user_len = get_user_ids().length;   // number of user_id's
         var last = 0;
 
         if(user_len !== 0) {
@@ -171,7 +167,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         });
 
         // add info about id's to user_id_arr, pages_arr
-        user_id_arr.push(tr.id);
+        // user_id_arr.push(tr.id);
 
         dis_enab_submit();
     });
@@ -208,9 +204,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     // return array of used pages
     function get_used_pages() {
-        var row, td, input, fields = [];
-        for(var tr in user_id_arr) {
-            row = document.getElementById(user_id_arr[tr]);
+        var row, td, input, id_arr = get_user_ids(), fields = [];
+        for(var tr in id_arr) {
+            row = document.getElementById(id_arr[tr]);
             td = row.getElementsByTagName("td")[1];
             input = td.getElementsByTagName("input");
             for(var i=0; i<input.length; i++) {
