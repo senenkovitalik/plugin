@@ -154,6 +154,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
             button.onclick = (function() {
                 tr.parentNode.removeChild(tr);
+                dis_enab_submit();
             });
 
             td_remove.appendChild(button);
@@ -164,35 +165,17 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             this.removeChild(this.getElementsByTagName("td")[2]);
         });
 
-        // add info about id's to user_id_arr, pages_arr
-        // user_id_arr.push(tr.id);
-
         dis_enab_submit();
     });
 
     // check to disable or enable submit button
     function dis_enab_submit() {
         // if there no user_id field then Submit button is disabled
-        if(get_user_ids().length === 0) {
-            submit_btn.disabled = "disabled";
+        if(table.rows.length === 0) {
+            submit_btn.disabled = true;
         } else {
             submit_btn.disabled = false;
         }
-    }
-
-    // return array of id <tr> user_id 
-    function get_user_ids() {
-        
-        var rows = table.getElementsByTagName("tr");
-        var fields = [];
-        
-        if(rows.length !== 0) {
-            for(var i = 0; i<rows.length; i++) {
-                fields.push(rows[i].id);
-            }
-        }
-
-        return fields;
     }
 
     // return JSON of all WP_post's (pages)
