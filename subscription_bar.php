@@ -118,20 +118,10 @@ class SubscriptionBar {
      */
 	function admin_action_callback() {
 
-		$json = $_POST['data'];
+		$data = $_POST['data'];
+		$this->db->save_settings( $data );
 
-		$pages = "";
-
-		for ($i=0; $i<count($json); $i++) { 
-			$user_id = $json[$i]['user_id'];
-			foreach ($json[$i]['pages'] as $p) {
-				$pages .= $p.","; 
-			}
-
-			$this->db->save_settings( $user_id, $pages );
-
-			$pages = "";
-		}
+		
 
 		// $status = $this->db->save_settings( $user_id, $pages );
 

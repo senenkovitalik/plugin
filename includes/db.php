@@ -43,9 +43,10 @@ class DB {
 
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
-				id 			int(1) 	DEFAULT 1,
+				id 			int 	NOT NULL AUTO_INCREMENT,
 				user_id		text 	NOT NULL,
-				pages 		text 	NOT NULL
+				pages 		text 	NOT NULL,
+				PRIMARY KEY (id)
 			);";
 
 			// we need 'upgrade.php' for dbDelta
@@ -57,27 +58,23 @@ class DB {
 	}
 
 	// Dave user id's
-	function save_settings($user_id, $pages) {
+	function save_settings( $data ) {
 
 		global $wpdb;
 
 		// get table name 
 		$table_name = $this->make_table_name();
 
-		// check for equal row
-		$id = $wpdb->get_var(($wpdb->prepare("SELECT user_id FROM {$table_name} WHERE user_id={$user_id};")));
+		$wpdb->query("TRUNCATE TABLE {$table_name};");
 
-		// if row already yet in DB - update, if not - insert
-		if($user_id === $id) {
-			$wpdb->update(
-				$table_name,
-				array(
-					'user_id' => $user_id,
-					'pages' => $pages
-				),
-				array('%s', '%s')
-			);
-		} else {
+		$pages = "";
+
+		for ($i=0; $i<count($data); $i++) { 
+			$user_id = $data[$i]['user_id'];
+			foreach ($data[$i]['pages'] as $p) {
+				$pages .= $p.","; 
+			}
+
 			$wpdb->insert(
 				$table_name,
 				array(
@@ -86,6 +83,8 @@ class DB {
 				),
 				array('%s', '%s')
 			);
+
+			$pages = "";
 		}
 	}
 
