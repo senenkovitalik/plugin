@@ -31,7 +31,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
 
                 echo 
-                "<tr>
+                "<tr style='height: 33px;'>
                     <td>
                         <input type='text' name='user_id_$i' value='".$user_id."' size='38'>
                     </td>
@@ -91,6 +91,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
             }
 
+        // when user add new account - remove unused checkboxes
         remove_unused_check(prev_row);
 
         // insert row 
