@@ -69,12 +69,13 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         var row_count = table.rows.length;   // number of rows
         var last = 0;
+        var prev_row;
 
         if(row_count !== 0) {
             last = row_count;  // index of new field
         }  
 
-        // user can add new account if there is unused pages
+        // user can add new account if there are unused pages
             var unused = unused_pages();
             if(unused.length === 0) {
                 return;
@@ -83,12 +84,14 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         // user can add new account only previous is completely filled
         // prev_row it's same as last row, cause "current row" is not added yet
             if(last !== 0) {
-                var prev_row = table.rows[row_count-1];
+                prev_row = table.rows[row_count-1];
         
                 if(!check_row(prev_row)) {
                     return;
                 }
             }
+
+        remove_unused_check(prev_row);
 
         // insert row 
             var tr = table.insertRow(last);
@@ -300,5 +303,27 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 this.removeChild(this.getElementsByTagName("td")[2]);
             });
         }
+    }
+
+    // remove unused checkboxes
+    function remove_unused_check(row) {
+        // if we have row
+        if(row !== undefined) {
+            // <td> with inputs
+            var td = row.cells[1];
+            // get array of input fields
+            var input_arr = td.getElementsByTagName("input");
+            // input tag (checkbox)
+            var ch;
+            for(var i=input_arr.length; i>0; i--) {
+                ch = input_arr[i-1];
+                if( !ch.checked ) {
+                    td.removeChild(ch.nextElementSibling); // <br>
+                    td.removeChild(ch.nextSibling);        // text
+                    td.removeChild(ch);                    // <input>
+                }
+            }
+        }
+        
     }
 </script>
