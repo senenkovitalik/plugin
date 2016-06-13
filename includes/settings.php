@@ -91,6 +91,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
             }
 
+        // clear status message
+        document.getElementById("stat").innerHTML = "";
+
         // when user add new account - remove unused checkboxes
         remove_unused_check(prev_row);
 
@@ -145,6 +148,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             button.onclick = (function() {
                 tr.parentNode.removeChild(tr);
                 dis_enab_submit();
+                document.getElementById("stat").innerHTML = "";
             });
 
             td_remove.appendChild(button);
@@ -294,6 +298,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 var tr = this.parentNode.parentNode;
                 table.tBodies[0].removeChild(tr);
                 dis_enab_submit();
+                document.getElementById("stat").innerHTML = "";
             });
 
             td_remove.appendChild(button);
