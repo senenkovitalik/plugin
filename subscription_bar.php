@@ -71,8 +71,14 @@ class SubscriptionBar {
      */
 	function admin_action_callback() {
 
+		// get data from settings page
 		$data = $_POST['data'];
-		$this->db->save_settings( $data );
+
+		if( $this->db->save_settings($data) ) {
+			echo "Your data succesfuly saved!!!";
+		} else {
+			echo "Oops! Some problems.";
+		}
 
 		wp_die();
 	}

@@ -57,14 +57,14 @@ class DB {
 		}
 	}
 
-	// Dave user id's
+	// Save user id's
 	function save_settings( $data ) {
 
 		global $wpdb;
 
 		// get table name 
 		$table_name = $this->make_table_name();
-
+		// clear table
 		$wpdb->query("TRUNCATE TABLE {$table_name};");
 
 		$pages = "";
@@ -75,7 +75,7 @@ class DB {
 				$pages .= $p.","; 
 			}
 
-			$wpdb->insert(
+			$status = $wpdb->insert(
 				$table_name,
 				array(
 					'user_id' => $user_id,
@@ -86,6 +86,8 @@ class DB {
 
 			$pages = "";
 		}
+
+		return $status;
 	}
 
 	/**
