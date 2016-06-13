@@ -122,26 +122,30 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 td_check.appendChild(br);
             }
 
-        tr.addEventListener("mouseenter", function() {
-            // show remove button
-            var td_remove = this.insertCell(2);
+        // third <td> with remove button
+            var td_remove = tr.insertCell(2);
 
+            // create remove button
             var button = document.createElement("input");
             button.type = "button";
             button.value = "Remove";
-            button.class="button button-primary";
+            button.style.display = "none";
 
+            // remove <tr> when user click on button
             button.onclick = (function() {
                 tr.parentNode.removeChild(tr);
-                // dis_enab_submit();
             });
 
             td_remove.appendChild(button);
+
+        tr.addEventListener("mouseenter", function() {
+            // show remove button
+            button.style.display = "inline";  
         });
 
         tr.addEventListener("mouseleave", function() {
             // hide remove button
-            this.removeChild(this.getElementsByTagName("td")[2]);
+            button.style.display = "none";
         });
 
         dis_enab_submit();
