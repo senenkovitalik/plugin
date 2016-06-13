@@ -26,14 +26,14 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 $checkbox;
                 foreach ($pages_arr as $page) {
                     if($page !== "") {
-                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked>".$page."<br>";
+                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked required>".$page."<br>";
                     }
                 }
 
                 echo 
                 "<tr style='height: 33px;'>
                     <td>
-                        <input type='text' name='user_id_$i' value='".$user_id."' size='38'>
+                        <input type='text' name='user_id_$i' value='".$user_id."' size='38' required>
                     </td>
                     <td>".$checkbox.
                     "</td>
@@ -107,6 +107,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             input_id.name = "user_id_"+last;
             input_id.value = "";
             input_id.size = 38;
+            input_id.required = true;
 
             // add <td> to <tr>
             td_id.appendChild(input_id);
@@ -120,6 +121,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 var input_ch = document.createElement("input");
                 input_ch.type = "checkbox";
                 input_ch.value =  unused[i];
+                input_ch.required = true;
 
                 // create page title
                 var text = document.createTextNode(unused[i]);
@@ -324,7 +326,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                     td.removeChild(ch);                    // <input>
                 }
             }
-        }
-        
+        }   
     }
 </script>
