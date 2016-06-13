@@ -139,7 +139,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             var button = document.createElement("input");
             button.type = "button";
             button.value = "Remove";
-            button.style.display = "none";
+            button.style.visibility = "hidden";
 
             // remove <tr> when user click on button
             button.onclick = (function() {
@@ -151,12 +151,12 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         tr.addEventListener("mouseenter", function() {
             // show remove button
-            button.style.display = "inline";  
+            button.style.visibility = "visible";  
         });
 
         tr.addEventListener("mouseleave", function() {
             // hide remove button
-            button.style.display = "none";
+            button.style.visibility = "hidden";
         });
 
         dis_enab_submit();
@@ -281,29 +281,31 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         for(var i=0; i<table.rows.length; i++) {
 
+            // create third <td>
+            var td_remove = table.rows[i].insertCell(2);
+
+            // create remove button
+            var button = document.createElement("input");
+            button.type = "button";
+            button.value = "Remove";
+            button.style.visibility = "hidden";
+
+            button.onclick = (function() {
+                var tr = this.parentNode.parentNode;
+                table.tBodies[0].removeChild(tr);
+                dis_enab_submit();
+            });
+
+            td_remove.appendChild(button);
+
             table.rows[i].addEventListener("mouseenter", function() {
                 // show remove button
-                var td_remove = this.insertCell(2);
-
-                var button = document.createElement("input");
-                button.type = "button";
-                button.value = "Remove";
-                button.class="button button-primary";
-
-                button.onclick = (function() {
-
-                    var tr = this.parentNode.parentNode;
-
-                    table.tBodies[0].removeChild(tr);
-                    // dis_enab_submit();
-                });
-
-                td_remove.appendChild(button);
+                this.cells[2].getElementsByTagName("input")[0].style.visibility = "visible";
             });
 
             table.rows[i].addEventListener("mouseleave", function() {
                 // hide remove button
-                this.removeChild(this.getElementsByTagName("td")[2]);
+                this.cells[2].getElementsByTagName("input")[0].style.visibility = "hidden";
             });
         }
     }
