@@ -137,6 +137,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             // remove <tr> when user click on button
             button.onclick = (function() {
                 tr.parentNode.removeChild(tr);
+                dis_enab_submit();
             });
 
             td_remove.appendChild(button);
