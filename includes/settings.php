@@ -92,6 +92,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         // insert row 
             var tr = table.insertRow(last);
+            tr.style.height = "33px";
 
         // first <td> with user_id
             var td_id = tr.insertCell(0);
