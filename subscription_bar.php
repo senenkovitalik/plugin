@@ -102,16 +102,33 @@ class SubscriptionBar {
 		$page = get_post()->post_name;
 
 		// find user_id by post name
-		$id = $this->db->find_user_id($page);
+		$data_widget_id = $this->db->find_user_id($page);
+
+		// if no id for this page - exit
+		if($data_widget_id == "") {
+			return;
+		}
 
 		$output = 
-		"<script> 
-			var body = document.getElementsByTagName('body')[0];
-			var script = document.createElement('script');
-			var text = document.createTextNode('$id');
-			script.appendChild(text);
+		"<script>
+			// get <body> tag
+			var body = document.getElementsByTagName(\"body\")[0];
+			// create new <script> tag
+			var script = document.createElement(\"script\");
+			script.setAttribute(\"data-version\", \"v1\");
+			script.setAttribute(\"data-widget-id\", \"$data_widget_id\");
+			script.id = \"rabbut-o-matic\";
+			script.type = \"text/javascript\";
+
+			var code = "."'(function() {function async_load(){ var s = document.createElement(\"script\"); s.type = \"text/javascript\"; s.async = true; var theUrl = \"https://devvy.rabbut.com/api/v1/js/$data_widget_id/\"; s.src = theUrl + ( theUrl.indexOf(\"?\") >= 0 ? \"&\" : \"?\") + \"ref=\" + encodeURIComponent(window.location.href);	var embedder = document.getElementById(\"rabbut-o-matic\");	embedder.parentNode.insertBefore(s, embedder); } if (window.attachEvent) { window.attachEvent(\"onload\", async_load); } else {	window.addEventListener(\"load\", async_load, false);}})();'"."
+
+			// create text node with text of new script and add it to new prev script
+			script.appendChild( document.createTextNode(code) );
+
+			// insert new <script> after open <body> tag
 			body.insertBefore(script, body.childNodes[0]);
 		</script>";
+
 		echo $output;
 	}
 
