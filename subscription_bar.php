@@ -3,7 +3,7 @@
 /*
 Plugin Name: Subscription Bar
 Plugin URI:
-Description: This plugin allow you to collect users email data and save it to your server.
+Description: This plugin allow you to add subscription forms to pages you want. <a href="admin.php?page=subscription_bar">Go to settings page</a>
 Version: 1.0
 Author: Vitaliy Senenko
 Author URi:
