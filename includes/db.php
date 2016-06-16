@@ -43,9 +43,12 @@ class DB {
 
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
-				id 			int 	NOT NULL AUTO_INCREMENT,
-				user_id		text 	NOT NULL,
-				pages 		text 	NOT NULL,
+				id 					int 	NOT NULL AUTO_INCREMENT,
+				user_id				text 	NOT NULL,
+				primary_pages 		text ,
+				custom_pages		text ,
+				tags 				text ,
+				categories			text
 				PRIMARY KEY (id)
 			);";
 
@@ -78,10 +81,13 @@ class DB {
 			$status = $wpdb->insert(
 				$table_name,
 				array(
-					'user_id' => $user_id,
-					'pages' => $pages
+					'user_id' 		=> $user_id,
+					'primary_pages' => $primary_pages,
+					'custom_pages'	=> $custom_pages,
+					'tags'			=> $tags,
+					'categories'	=> $categories
 				),
-				array('%s', '%s')
+				array('%s', '%s', '%s', '%s', '%s')
 			);
 
 			$pages = "";

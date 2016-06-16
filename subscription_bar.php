@@ -46,6 +46,8 @@ class SubscriptionBar {
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
 
+		add_action('wp_footer', array($this, 'ident_page' ));
+
 		$this->db = $db;
 	}
 
@@ -130,6 +132,26 @@ class SubscriptionBar {
 		</script>";
 
 		echo $output;
+	}
+
+	function ident_page() {
+		if ( is_front_page() && is_home() ) {
+			echo "<script>console.log('The Blog Page')</script>";
+		} elseif ( is_front_page() ) {
+			echo "<script>console.log('The Front Page')</script>";
+		} elseif ( is_home() ) {
+			echo "<script>console.log('The Main Page')</script>";
+		} else {
+			if ( is_page() ) {
+				echo "<script>console.log('Everything else : Page')</script>";
+			} elseif ( is_single() ) {
+				echo "<script>console.log('Everything else : Post')</script>";
+			} elseif ( is_category() ) {
+				echo "<script>console.log('Everything else : Category')</script>";
+			} elseif ( is_tag() ) {
+				echo "<script>console.log('Everything else : Tag')</script>";
+			}
+		}
 	}
 
 	/**

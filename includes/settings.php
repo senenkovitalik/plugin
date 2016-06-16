@@ -26,7 +26,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 $checkbox;
                 foreach ($pages_arr as $page) {
                     if($page !== "") {
-                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked required>".$page."<br>";
+                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked>".$page."<br>";
                     }
                 }
 
@@ -76,10 +76,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         }  
 
         // user can add new account if there are unused pages
-            var unused = unused_pages();
-            if(unused.length === 0) {
-                return;
-            }
+            // var unused = unused_pages();
+            // if(unused.length === 0) {
+            //     return;
+            // }
 
         // user can add new account only previous is completely filled
         // prev_row it's same as last row, cause "current row" is not added yet
@@ -95,7 +95,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         document.getElementById("stat").innerHTML = "";
 
         // when user add new account - remove unused checkboxes
-        remove_unused_check(prev_row);
+        //remove_unused_check(prev_row);
 
         // insert row 
             var tr = table.insertRow(last);
@@ -118,22 +118,41 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         // second <td> with pages
             var td_check = tr.insertCell(1);
 
-            for(var i=0; i<unused.length; i++) {
+                var all = all_data();
+                var primary = all[0].primary;
+                var custom = all[1].custom;
+                var tags = all[2].tags;
+                var categories = all[3].categories;
 
-                // create new <input> element
-                var input_ch = document.createElement("input");
-                input_ch.type = "checkbox";
-                input_ch.value =  unused[i];
-                input_ch.required = true;
+                var div, text, br, input_ch, j=0;;
 
-                // create page title
-                var text = document.createTextNode(unused[i]);
-                var br = document.createElement("br");
+                var t = ["Primary pages", "Custom pages", "Tags", "Categories"];
+                for(var o in t) {
+                    div = document.createElement("div");
+                    text = document.createTextNode(t[o]);
+                    br = document.createElement("br");
+                    div.appendChild(text);
+                    div.appendChild(br);
 
-                td_check.appendChild(input_ch);
-                td_check.appendChild(text);
-                td_check.appendChild(br);
-            }
+                    var data = [primary, custom, tags, categories];
+
+                    for (var i=0; i<data[j].length; i++) {
+                        // create new <input> element
+                        input_ch = document.createElement("input");
+                        input_ch.type = "checkbox";
+                        input_ch.value =  data[j][i];
+
+                        // create page title
+                        text = document.createTextNode(data[j][i]);
+                        br = document.createElement("br");
+
+                        div.appendChild(input_ch);
+                        div.appendChild(text);
+                        div.appendChild(br);
+                    }
+                    j++;
+                    td_check.appendChild(div);
+                }
 
         // third <td> with remove button
             var td_remove = tr.insertCell(2);
@@ -174,32 +193,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         } else {
             submit_btn.disabled = false;
         }
-    }
-
-    // return JSON of all WP_post's (pages)
-    function get_all_pages() {
-        <?php 
-            $args = array(
-                        'sort_order'   => 'ASC',
-                        'sort_column'  => 'post_title',
-                        'hierarchical' => 1,
-                        'exclude'      => '',
-                        'include'      => '',
-                        'meta_key'     => '',
-                        'meta_value'   => '',
-                        'authors'      => '',
-                        'child_of'     => 0,
-                        'parent'       => -1,
-                        'exclude_tree' => '',
-                        'number'       => '',
-                        'offset'       => 0,
-                        'post_type'    => 'page',
-                        'post_status'  => 'publish',
-                    ); 
-            // get array of WP_post's
-            $pages = get_pages( $args );
-        ?>
-        return <?php echo json_encode($pages); ?>;
     }
 
     // return array of used pages
@@ -335,4 +328,58 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             }
         }   
     }
+
+    // create object of lists of pages, tags, categories
+    function all_data() {
+        <?php 
+            $tags = get_tags();
+            $tags_arr = array(); 
+            foreach ($tags as $tag) {
+                array_push($tags_arr, $tag->name);
+            }
+
+            $categories = get_categories();
+            $cat_arr = array();
+            if( $categories ) {
+                foreach ($categories as $cat) {
+                    array_push($cat_arr, $cat->name);
+                }
+            }
+
+            $args = array(
+                        'sort_order'   => 'ASC',
+                        'sort_column'  => 'post_title',
+                        'hierarchical' => 1,
+                        'exclude'      => '',
+                        'include'      => '',
+                        'meta_key'     => '',
+                        'meta_value'   => '',
+                        'authors'      => '',
+                        'child_of'     => 0,
+                        'parent'       => -1,
+                        'exclude_tree' => '',
+                        'number'       => '',
+                        'offset'       => 0,
+                        'post_type'    => 'page',
+                        'post_status'  => 'publish',
+                    ); 
+            $page_arr = array();
+            $pages = get_pages( $args );
+            if( $pages ) {
+                foreach ($pages as $page) {
+                    array_push($page_arr, $page->post_title);
+                }
+            }
+
+            $json = array(
+                array('primary' => array('Main Page', 'Front Page', 'Blog Page', 'Posts')),
+                array('custom' => $page_arr),
+                array('tags' => $tags_arr),
+                array('categories' => $cat_arr)
+                );
+        ?>
+
+        return <?php echo json_encode($json); ?>;
+    }
+
 </script>
