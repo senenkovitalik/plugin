@@ -59,8 +59,6 @@ jQuery(document).ready( function( $ ) {
             data.push(obj);     // data for post request
         }
 
-        console.log(data);
-
         // send data to server
         $.post(
             admin_object.ajax_url,

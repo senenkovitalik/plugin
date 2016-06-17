@@ -77,13 +77,11 @@ class SubscriptionBar {
 		$data = $_POST['data'];
 
 		// try to save data to DB
-		// if( 
-			echo $this->db->save_settings($data); 
-		// 	) {
-		// 	echo "Your data succesfuly saved!!!";
-		// } else {
-		// 	echo "Oops! Some problems.";
-		// }
+		if(	$this->db->save_settings($data) ) {
+			echo "Your data succesfuly saved!!!";
+		} else {
+			echo "Oops! Some problems.";
+		}
 
 		wp_die();
 	}

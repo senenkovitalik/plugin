@@ -13,20 +13,87 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             $d = $this->db->get_data();
             $i = 0;
 
+            $type = array('primary_pages', 'custom_pages', 'tags', 'categories');
+
+            // iterate over table rows
             foreach ($d as $row) {
 
-                // get user id
+                // data from DB ( saved by user )
                 $user_id = $row['user_id'];
-                // remove all whitespaces
-                $pages = preg_replace('/\s+/', '', $row['pages']);
-                // brake string into array
-                $pages_arr = explode(',', $pages);
 
-                // create checkboxes
-                $checkbox;
-                foreach ($pages_arr as $page) {
-                    if($page !== "") {
-                        $checkbox .= "<input type='checkbox' name='page' value='".$page."' checked>".$page."<br>";
+                for( $k=1; $k<count($row); $k++ ) {
+                    
+                    // brake string into array
+                    $pages_arr = explode(', ', $row[$type[$k-1]]);
+
+                    switch ( $k ) {
+
+                        case 1:
+                            // primary_pages
+                            $p = array('Main Page', 'Front Page', 'Blog Page', 'Posts');
+
+                            foreach($p as $pi) {
+
+                                if( in_array($pi, $pages_arr) ) {
+                                    $pp .= "<input type='checkbox' value='".$pi."' checked>".$pi."<br>";
+                                } else {
+                                    $pp .= "<input type='checkbox' value='".$pi."'>".$pi."<br>";
+                                }
+                            }
+                            
+                            break;
+
+                        case 2:
+                            // custom_pages
+                            $p = get_pages();
+                            foreach ($p as $pi ) {
+
+                                if( in_array($pi->post_title, $pages_arr) ) {
+                                    $cp .= "<input type='checkbox' value='".$pi->post_title."' checked>".$pi->post_title."<br>";
+                                } else {
+                                    $cp .= "<input type='checkbox' value='".$pi->post_title."'>".$pi->post_title."<br>";
+                                }
+                            }
+                            break;
+
+                        case 3:
+                            // tags
+                            $args = array(
+                                'number'        => 0
+                                ,'offset'       => 0
+                                ,'orderby'      => 'id'
+                                ,'order'        => 'ASC'
+                                ,'hide_empty'   => false
+                                ,'fields'       => 'all'
+                                ,'slug'         => ''
+                                ,'hierarchical' => true
+                                ,'name__like'   => ''
+                                ,'pad_counts'   => false
+                                ,'get'          => ''
+                                ,'child_of'     => 0
+                                ,'parent'       => ''
+                            );
+                            $tags = get_tags( $args ); // data from WPDB 
+                            foreach ($tags as $tag) {
+                                if( in_array($tag->name, $pages_arr) ) {
+                                    $t .= "<input type='checkbox' value='".$tag->name."' checked>".$tag->name."<br>";
+                                } else {
+                                    $t .= "<input type='checkbox' value='".$tag->name."'>".$tag->name."<br>";
+                                }
+                            }
+                            break;
+
+                        case 4:
+                            // categories
+                            $categories = get_categories();
+                            foreach ($categories as $cat) {
+                                if( in_array($cat->name, $pages_arr) ) {
+                                    $c .= "<input type='checkbox' value='".$cat->name."' checked>".$cat->name."<br>";
+                                } else {
+                                    $c .= "<input type='checkbox' value='".$cat->name."'>".$cat->name."<br>";
+                                }
+                            }
+                            break; 
                     }
                 }
 
@@ -35,12 +102,18 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                     <td>
                         <input type='text' name='user_id_$i' value='".$user_id."' size='38' required>
                     </td>
-                    <td>".$checkbox.
-                    "</td>
+                    <td>
+                        <div id='Primary Pages'>Primary Pages<br>".$pp."</div>
+                        <div id='Custom Pages'>Custom Pages<br>".$cp."</div>
+                        <div id='Tags'>Tags<br>".$t."</div>
+                        <div id='Categories'>Categories<br>".$c."</div>
+                    </td>
+                    <td>
+                    </td>
                 </tr>";
 
-                // clear checkboxes
-                $checkbox = "";
+                // clear
+                $pp = ""; $cp=""; $t=""; $c="";
 
                 $i++;
             }
@@ -119,12 +192,13 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             var td_check = tr.insertCell(1);
 
                 var all = all_data();
+                console.log(all);
                 var primary = all[0].primary;
                 var custom = all[1].custom;
                 var tags = all[2].tags;
                 var categories = all[3].categories;
 
-                var div, text, br, input_ch, j=0;;
+                var div, text, br, input_ch, j=0;
 
                 var t = ["Primary pages", "Custom pages", "Tags", "Categories"];
                 for(var o in t) {
@@ -377,7 +451,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 array('custom' => $page_arr),
                 array('tags' => $tags_arr),
                 array('categories' => $cat_arr)
-                );
+            );
         ?>
 
         return <?php echo json_encode($json); ?>;
