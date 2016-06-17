@@ -5,6 +5,7 @@ jQuery(document).ready( function( $ ) {
         event.preventDefault();
 
         var table = $("#user_table")[0];
+        
         var rows = table.rows;
         var user_id, div, ch, p_arr = [],
             primary_pages, custom_pages, tags, categories, 
@@ -16,7 +17,8 @@ jQuery(document).ready( function( $ ) {
             // get user id
             user_id = rows[i].getElementsByTagName("td")[0].getElementsByTagName("input")[0].value;
             // get all div's from current row
-            div = rows[i].getElementsByTagName("td")[1].childNodes;
+
+            div = rows[i].getElementsByTagName("td")[1].getElementsByTagName("div");
 
             // iterate over divs
             for(var j=0; j<div.length; j++) {
