@@ -100,7 +100,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 echo 
                 "<tr style='height: 33px;'>
                     <td>
-                        <input type='text' name='user_id_$i' value='".$user_id."' size='38' required>
+                        <input type='text' value='".$user_id."' size='38' required>
                     </td>
                     <td>
                         <div id='Primary Pages'>Primary Pages<br>".$pp."</div>
@@ -180,7 +180,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             // input field for user_id
             var input_id = document.createElement("input");
             input_id.type = "text";
-            input_id.name = "user_id_"+last;
             input_id.value = "";
             input_id.size = 38;
             input_id.required = true;
