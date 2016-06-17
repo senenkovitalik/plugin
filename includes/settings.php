@@ -129,6 +129,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 var t = ["Primary pages", "Custom pages", "Tags", "Categories"];
                 for(var o in t) {
                     div = document.createElement("div");
+                    div.id = t[o];
                     text = document.createTextNode(t[o]);
                     br = document.createElement("br");
                     div.appendChild(text);
