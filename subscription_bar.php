@@ -46,8 +46,6 @@ class SubscriptionBar {
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
 
-		add_action('wp_footer', array($this, 'ident_page' ));
-
 		$this->db = $db;
 	}
 
@@ -101,12 +99,41 @@ class SubscriptionBar {
 
 	function insert_script() {
 
-		// current post name
-		$page = get_post()->post_title;
+		$post = get_post();
 
-		echo "<script>console.log('$page');</script>";
+		// blog page
+		if ( is_front_page() && is_home() ) {
+			echo "<script>console.log('The Blog Page')</script>";
+			$current_page = "Blog Page";
+		// front page
+		} elseif ( is_front_page() ) {
+			echo "<script>console.log('The Front Page')</script>";
+			$current_page = "Front Page";
+		// main page
+		} elseif ( is_home() ) {
+			echo "<script>console.log('The Main Page')</script>";
+			$current_page = "Main Page";
+		// page
+		} elseif ( is_page() ) {
+			$current_page = $post->post_title;
+			echo "<script>console.log('Everything else : Page $current_page')</script>";
+		// post
+		} elseif ( is_single() ) {
+			$current_page = "Posts";
+			// $post->post_title;
+			echo "<script>console.log('Everything else : Post $current_page')</script>";
+		// category
+		} elseif ( is_category() ) {
+			$current_page = single_cat_title( $prefix = '', $display = false );
+			echo "<script>console.dir('Everything else : Category $current_page')</script>";
+		// tag
+		} elseif ( is_tag() ) {
+			$current_page = single_tag_title( $prefix = '', $display = false );
+			echo "<script>console.log('Everything else : Tag $current_page')</script>";
+		}
+
 		// find user_id by post name
-		$data_widget_id = $this->db->find_user_id($page);
+		$data_widget_id = $this->db->find_user_id( $current_page );
 
 		// if no id for this page - exit
 		if($data_widget_id == "") {
@@ -134,31 +161,6 @@ class SubscriptionBar {
 		</script>";
 
 		echo $output;
-	}
-
-	function ident_page() {
-		// blog page
-		if ( is_front_page() && is_home() ) {
-			echo "<script>console.log('The Blog Page')</script>";
-		// front page
-		} elseif ( is_front_page() ) {
-			echo "<script>console.log('The Front Page')</script>";
-		// main page
-		} elseif ( is_home() ) {
-			echo "<script>console.log('The Main Page')</script>";
-		// page
-		} elseif ( is_page() ) {
-			echo "<script>console.log('Everything else : Page')</script>";
-		// post
-		} elseif ( is_single() ) {
-			echo "<script>console.log('Everything else : Post')</script>";
-		// category
-		} elseif ( is_category() ) {
-			echo "<script>console.log('Everything else : Category')</script>";
-		// tag
-		} elseif ( is_tag() ) {
-			echo "<script>console.log('Everything else : Tag')</script>";
-		}
 	}
 
 	/**

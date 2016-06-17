@@ -131,18 +131,18 @@ class DB {
 
 		$data = $this->get_data();
 
+		echo "<script> console.log('Page : $page'); </script>";
+
 		foreach ($data as $row) {
 
-            // remove all whitespaces
-            $pages = preg_replace('/\s+/', '', $row['pages']);
             // brake string into array
-            $pages_arr = explode(', ', $pages);
+            $prim = explode(', ', $row['primary_pages']);
+            $cust = explode(', ', $row['custom_pages']);
+            $tags = explode(', ', $row['tags']);
+            $cats = explode(', ', $row['categories']);
 
-            foreach ($pages_arr as $p) {
-            	// return $p ." ". $page;
-                if($p === $page) {
-                	return $row['user_id'];
-                }
+            if( in_array($page, $prim) || in_array($page, $cust) ||	in_array($page, $tags) || in_array($page, $cats) ) {
+            		return $row['user_id'];
             }
         }
         return "";
