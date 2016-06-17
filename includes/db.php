@@ -1,9 +1,6 @@
 <?php
 namespace com\vital\subscription_bar;
 
-use PDO;
-use PDOException;
-
 class DB {
 
 	/**
@@ -44,11 +41,11 @@ class DB {
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
 				id 					int 	NOT NULL AUTO_INCREMENT,
-				user_id				text 	NOT NULL,
-				primary_pages 		text ,
-				custom_pages		text ,
-				tags 				text ,
-				categories			text
+				user_id				varchar(255) 	NOT NULL,
+				primary_pages 		varchar(255),
+				custom_pages		varchar(255),
+				tags 				varchar(255),
+				categories			varchar(255),
 				PRIMARY KEY (id)
 			);";
 
