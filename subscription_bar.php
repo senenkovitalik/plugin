@@ -102,8 +102,9 @@ class SubscriptionBar {
 	function insert_script() {
 
 		// current post name
-		$page = get_post()->post_name;
+		$page = get_post()->post_title;
 
+		echo "<script>console.log('$page');</script>";
 		// find user_id by post name
 		$data_widget_id = $this->db->find_user_id($page);
 
@@ -136,22 +137,27 @@ class SubscriptionBar {
 	}
 
 	function ident_page() {
+		// blog page
 		if ( is_front_page() && is_home() ) {
 			echo "<script>console.log('The Blog Page')</script>";
+		// front page
 		} elseif ( is_front_page() ) {
 			echo "<script>console.log('The Front Page')</script>";
+		// main page
 		} elseif ( is_home() ) {
 			echo "<script>console.log('The Main Page')</script>";
-		} else {
-			if ( is_page() ) {
-				echo "<script>console.log('Everything else : Page')</script>";
-			} elseif ( is_single() ) {
-				echo "<script>console.log('Everything else : Post')</script>";
-			} elseif ( is_category() ) {
-				echo "<script>console.log('Everything else : Category')</script>";
-			} elseif ( is_tag() ) {
-				echo "<script>console.log('Everything else : Tag')</script>";
-			}
+		// page
+		} elseif ( is_page() ) {
+			echo "<script>console.log('Everything else : Page')</script>";
+		// post
+		} elseif ( is_single() ) {
+			echo "<script>console.log('Everything else : Post')</script>";
+		// category
+		} elseif ( is_category() ) {
+			echo "<script>console.log('Everything else : Category')</script>";
+		// tag
+		} elseif ( is_tag() ) {
+			echo "<script>console.log('Everything else : Tag')</script>";
 		}
 	}
 

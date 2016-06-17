@@ -127,7 +127,7 @@ class DB {
 	}
 
 	// get user_id value assigned to some page
-	function find_user_id($page) {
+	function find_user_id( $page ) {
 
 		$data = $this->get_data();
 
@@ -136,7 +136,7 @@ class DB {
             // remove all whitespaces
             $pages = preg_replace('/\s+/', '', $row['pages']);
             // brake string into array
-            $pages_arr = explode(',', $pages);
+            $pages_arr = explode(', ', $pages);
 
             foreach ($pages_arr as $p) {
             	// return $p ." ". $page;
