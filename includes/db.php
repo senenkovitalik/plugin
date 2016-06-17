@@ -57,7 +57,7 @@ class DB {
 		}
 	}
 
-	// Save user id's
+	// Save user data to DB
 	function save_settings( $data ) {
 
 		global $wpdb;
@@ -67,13 +67,18 @@ class DB {
 		// clear table
 		$wpdb->query("TRUNCATE TABLE {$table_name};");
 
-		$pages = "";
-
+		// iterate over objects
 		for ($i=0; $i<count($data); $i++) { 
-			$user_id = $data[$i]['user_id'];
-			foreach ($data[$i]['pages'] as $p) {
-				$pages .= $p.","; 
-			}
+
+			// current object
+			$pt = $data[$i];
+
+			// transform arrays into strings separated by comma
+			$user_id = $pt['user_id'];
+			$primary_pages = implode(", ", $pt['primary_pages']);
+			$custom_pages  = implode(", ", $pt['custom_pages']);
+			$tags 		   = implode(", ", $pt['tags']);
+			$categories    = implode(", ", $pt['categories']);
 
 			$status = $wpdb->insert(
 				$table_name,
@@ -86,8 +91,6 @@ class DB {
 				),
 				array('%s', '%s', '%s', '%s', '%s')
 			);
-
-			$pages = "";
 		}
 
 		return $status;

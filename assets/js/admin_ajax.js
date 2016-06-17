@@ -55,11 +55,11 @@ jQuery(document).ready( function( $ ) {
             obj.tags = tags;
             obj.categories = categories;
 
-            console.log(obj);
-
             // add object to array
             data.push(obj);     // data for post request
         }
+
+        console.log(data);
 
         // send data to server
         $.post(

@@ -69,18 +69,21 @@ class SubscriptionBar {
 	}
 
 	/**
-	 * Save setting for another DB to WP DB
+	 * Save setting DB to WP DB
      */
 	function admin_action_callback() {
 
 		// get data from settings page
 		$data = $_POST['data'];
 
-		if( $this->db->save_settings($data) ) {
-			echo "Your data succesfuly saved!!!";
-		} else {
-			echo "Oops! Some problems.";
-		}
+		// try to save data to DB
+		// if( 
+			echo $this->db->save_settings($data); 
+		// 	) {
+		// 	echo "Your data succesfuly saved!!!";
+		// } else {
+		// 	echo "Oops! Some problems.";
+		// }
 
 		wp_die();
 	}
