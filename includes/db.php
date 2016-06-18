@@ -54,7 +54,6 @@ class DB {
 
 			// execute statement
 			$stat = $wpdb->query( $sql );
-			echo "<script> console.log('Status : $stat'); </script>";
 		}
 	}
 
