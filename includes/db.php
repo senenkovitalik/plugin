@@ -40,12 +40,12 @@ class DB {
 
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
-				id 					int 	NOT NULL AUTO_INCREMENT,
-				user_id				varchar(255) 	NOT NULL,
-				primary_pages 		varchar(255),
-				custom_pages		varchar(255),
-				tags 				varchar(255),
-				categories			varchar(255),
+				id 				int 		 NOT NULL AUTO_INCREMENT,
+				user_id	 		varchar(255) NOT NULL,
+				primary_pages 	varchar(255),
+				custom_pages 	varchar(255),
+				tags 			varchar(255),
+				categories 		varchar(255),
 				PRIMARY KEY (id)
 			);";
 
@@ -53,7 +53,8 @@ class DB {
 			require_once ( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 			// execute statement
-			dbDelta( $sql );
+			$stat = $wpdb->query( $sql );
+			echo "<script> console.log('Status : $stat'); </script>";
 		}
 	}
 
