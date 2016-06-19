@@ -1,8 +1,6 @@
 jQuery(document).ready( function( $ ) {
 
-    $("#form_db_set").submit(function( event ) {
-
-        event.preventDefault();
+    $("input#submit_btn").click(function() {
 
         var table = $("#user_table")[0];
         

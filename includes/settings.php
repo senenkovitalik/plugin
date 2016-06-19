@@ -124,7 +124,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     <div style="position: relative; left: 5px;">
         <input id="add_account" type="button" value="Add User ID" class="button button-primary" ">
-        <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
+        <input id="submit_btn" type="button" value="Submit" class="button button-primary">
         <span id="stat" style="vertical-align: middle; margin-left: 20px;"></span>
     </div>
     
