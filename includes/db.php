@@ -101,7 +101,7 @@ class DB {
 
 		$table_name = $this->make_table_name();
 
-		// array of row 
+		// associative array of rows
 		$data = $wpdb->get_results("SELECT * FROM {$table_name};", ARRAY_A);
 
 		return $data;
@@ -123,9 +123,8 @@ class DB {
 	// get user_id value assigned to some page
 	function find_user_id( $page ) {
 
+		// get all data from DB
 		$data = $this->get_data();
-
-		echo "<script> console.log('Page : $page'); </script>";
 
 		foreach ($data as $row) {
 
@@ -135,10 +134,19 @@ class DB {
             $tags = explode(', ', $row['tags']);
             $cats = explode(', ', $row['categories']);
 
-            if( in_array($page, $prim) || in_array($page, $cust) ||	in_array($page, $tags) || in_array($page, $cats) ) {
+			// check that page exist in one of array 
+            if( 
+            	in_array($page, $prim) || 
+            	in_array($page, $cust) ||
+            	in_array($page, $tags) || 
+            	in_array($page, $cats) 
+            ) {
+            	// if so, return user ID
             		return $row['user_id'];
             }
         }
+
+        // if not, return empty string
         return "";
 	}
 }
