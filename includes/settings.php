@@ -142,19 +142,21 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     // add event "onclick" to Add Acount button
     add_account.addEventListener("click", function() {
 
-        var row_count = table.rows.length;   // number of rows
-        var last = 0;
-        var prev_row;
+        var row_count = table.rows.length,   // number of rows
+            last = 0, prev_row, tr, td_id, input_id, td_check, all, primary, custom, tags, categories, div, text, br, input_ch, j, t,data, td_remove, button;
 
-        if(row_count !== 0) {
-            last = row_count;  // index of new field
-        }  
+        // if table contain rows
+            if(row_count !== 0) {
+                // index of new field
+                last = row_count; 
+            }  
 
         // user can add new account only previous is completely filled
         // prev_row it's same as last row, cause "current row" is not added yet
             if(last !== 0) {
                 prev_row = table.rows[row_count-1];
         
+                // if prev row not filled
                 if(!check_row(prev_row)) {
                     return;
                 }
@@ -164,14 +166,14 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         document.getElementById("stat").innerHTML = "";
 
         // insert row 
-            var tr = table.insertRow(last);
+            tr = table.insertRow(last);
             tr.style.height = "33px";
 
         // first <td> with user_id
-            var td_id = tr.insertCell(0);
+            td_id = tr.insertCell(0);
 
             // input field for user_id
-            var input_id = document.createElement("input");
+            input_id = document.createElement("input");
             input_id.type = "text";
             input_id.value = "";
             input_id.size = 38;
@@ -181,27 +183,34 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             td_id.appendChild(input_id);
 
         // second <td> with pages
-            var td_check = tr.insertCell(1);
+            td_check = tr.insertCell(1);
 
-                var all = all_data();
-                var primary = all[0].primary;
-                var custom = all[1].custom;
-                var tags = all[2].tags;
-                var categories = all[3].categories;
+                all = all_data();
+                primary = all[0].primary;
+                custom = all[1].custom;
+                tags = all[2].tags;
+                categories = all[3].categories;
 
-                var div, text, br, input_ch, j=0;
+                j=0;
+                // array of page types
+                t = ["Primary pages", "Custom pages", "Tags", "Categories"];
 
-                var t = ["Primary pages", "Custom pages", "Tags", "Categories"];
+                // iterate over page types
                 for(var o in t) {
+                    // create new <div> for checkboxes
                     div = document.createElement("div");
+                    // div ID same as page type name
                     div.id = t[o];
+                    // Create header for checkboxes
                     text = document.createTextNode(t[o]);
                     br = document.createElement("br");
                     div.appendChild(text);
                     div.appendChild(br);
 
-                    var data = [primary, custom, tags, categories];
+                    // array of all pages, tags, categories that exist in WP
+                    data = [primary, custom, tags, categories];
 
+                    // iterate over data items
                     for (var i=0; i<data[j].length; i++) {
                         // create new <input> element
                         input_ch = document.createElement("input");
@@ -221,10 +230,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 }
 
         // third <td> with remove button
-            var td_remove = tr.insertCell(2);
+            td_remove = tr.insertCell(2);
 
             // create remove button
-            var button = document.createElement("input");
+            button = document.createElement("input");
             button.type = "button";
             button.value = "Remove";
             button.style.visibility = "hidden";
@@ -236,15 +245,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 document.getElementById("stat").innerHTML = "";
             });
 
+            // add button to <td>
             td_remove.appendChild(button);
 
+        // show remove button when user hover on row
         tr.addEventListener("mouseenter", function() {
-            // show remove button
             button.style.visibility = "visible";  
         });
 
+        // hide remove button when user move out row
         tr.addEventListener("mouseleave", function() {
-            // hide remove button
             button.style.visibility = "hidden";
         });
 
