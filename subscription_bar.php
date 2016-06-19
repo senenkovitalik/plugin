@@ -120,7 +120,6 @@ class SubscriptionBar {
 		// post
 		} elseif ( is_single() ) {
 			$current_page = "Posts";
-			// $post->post_title;
 			echo "<script>console.log('Everything else : Post $current_page')</script>";
 		// category
 		} elseif ( is_category() ) {

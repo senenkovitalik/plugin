@@ -31,12 +31,12 @@ class DB {
 
 		$table_name	= $this->make_table_name();
 
-		// if table not exist
+		// check that table already exist
 		$table = $wpdb->get_var(
 			$wpdb->prepare( "SHOW TABLES LIKE '$table_name'", "%s" )
 		);
 
-		if ( $table != $table_name) {
+		if ( $table !== $table_name) {
 
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
@@ -48,9 +48,6 @@ class DB {
 				categories 		varchar(255),
 				PRIMARY KEY (id)
 			);";
-
-			// we need 'upgrade.php' for dbDelta
-			require_once ( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 			// execute statement
 			$stat = $wpdb->query( $sql );
