@@ -65,17 +65,14 @@ class DB {
 		$wpdb->query("TRUNCATE TABLE {$table_name};");
 
 		// iterate over objects
-		for ($i=0; $i<count($data); $i++) { 
-
-			// current object
-			$pt = $data[$i];
+		foreach ($data as $d) { 
 
 			// transform arrays into strings separated by comma
-			$user_id = $pt['user_id'];
-			$primary_pages = implode(", ", $pt['primary_pages']);
-			$custom_pages  = implode(", ", $pt['custom_pages']);
-			$tags 		   = implode(", ", $pt['tags']);
-			$categories    = implode(", ", $pt['categories']);
+			$user_id = $d['user_id'];
+			$primary_pages = implode(", ", $d['primary_pages']);
+			$custom_pages  = implode(", ", $d['custom_pages']);
+			$tags 		   = implode(", ", $d['tags']);
+			$categories    = implode(", ", $d['categories']);
 
 			$status = $wpdb->insert(
 				$table_name,
