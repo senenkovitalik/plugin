@@ -104,7 +104,9 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 echo 
                 "<tr style='height: 33px;'>
                     <td>
-                        <input type='text' value='".$user_id."' size='38' required>
+                        <input type='text' value='".$user_id."' size='38' 
+                        pattern='[0-9A-z]{8}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{12}'
+                        title='Type your ID in format XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX' required>
                     </td>
                     <td>
                         <div id='Primary Pages'>Primary Pages<br>".$pp."</div>
@@ -124,7 +126,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
     <div style="position: relative; left: 5px;">
         <input id="add_account" type="button" value="Add User ID" class="button button-primary" ">
-        <input id="submit_btn" type="button" value="Submit" class="button button-primary">
+        <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
         <span id="stat" style="vertical-align: middle; margin-left: 20px;"></span>
     </div>
     
@@ -178,6 +180,8 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             input_id.value = "";
             input_id.size = 38;
             input_id.required = true;
+            input_id.pattern = "[0-9A-z]{8}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{12}";
+            input_id.title = "Type your ID in format XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 
             // add <td> to <tr>
             td_id.appendChild(input_id);
