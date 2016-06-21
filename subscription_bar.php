@@ -43,6 +43,9 @@ class SubscriptionBar {
 		// admin settings page
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
 
+		// admin settings page CSS
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style') );
+
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
 
@@ -88,13 +91,31 @@ class SubscriptionBar {
 	 * Add menu item to admin page
      */
 	function admin_add_menu_item() {
-		add_menu_page(
-			'Subscription Bar', 
-			'Subscript Bar settings', 
-			'manage_options', 
-			'subscription_bar', 
-			array( $this, 'show_settings_page')
-			);
+
+	  // create global var for ident setting page
+	  global $bar_settings_page;
+
+	  $bar_settings_page =  add_menu_page(
+	    'Subscription Bar', 
+		'Subscript Bar settings', 
+		'manage_options', 
+		'subscription_bar', 
+		array( $this, 'show_settings_page')
+	  );
+	}
+
+	// Add CSS file to settings page
+	function admin_enqueue_style($hook) {
+
+	  // hook of settings page
+	  global $bar_settings_page;
+
+	  if ( $bar_settings_page != $hook ) {
+		return;
+	  }
+
+	  wp_register_style( 'bar_style', plugins_url( '/assets/css/bar_style.css', __FILE__ ) );
+	  wp_enqueue_style( 'bar_style' );
 	}
 
 	function insert_script() {

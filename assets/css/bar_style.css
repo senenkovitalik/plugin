@@ -1,0 +1,17 @@
+form#form_db_set {}
+
+table#user_table {}
+
+div#form_buttons {
+	position: relative;
+	left: 5px;
+}
+
+input#add_acount {}
+
+input#submit_btn {}
+
+span#stat {
+	vertical-align: middle;
+	margin-left: 20px;
+}

@@ -102,7 +102,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
                 // output table row
                 echo 
-                "<tr style='height: 33px;'>
+                "<tr>
                     <td>
                         <input type='text' value='".$user_id."' size='38' 
                         pattern='[0-9A-z]{8}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{4}-[0-9A-z]{12}'
@@ -124,10 +124,10 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         ?>
     </table>
 
-    <div style="position: relative; left: 5px;">
+    <div id="form_buttons">
         <input id="add_account" type="button" value="Add User ID" class="button button-primary" ">
         <input id="submit_btn" type="submit" value="Submit" class="button button-primary">
-        <span id="stat" style="vertical-align: middle; margin-left: 20px;"></span>
+        <span id="stat"></span>
     </div>
     
 </form>
