@@ -59,20 +59,27 @@ class DB {
 
 		global $wpdb;
 
-		// get table name 
 		$table_name = $this->make_table_name();
+		
 		// clear table
 		$wpdb->query("TRUNCATE TABLE {$table_name};");
 
-		// iterate over objects
 		foreach ($data as $d) { 
 
-			// transform arrays into strings separated by comma
+			// transform arrays into string with words separated by comma
 			$user_id = $d['user_id'];
-			$primary_pages = implode(", ", $d['primary_pages']);
-			$custom_pages  = implode(", ", $d['custom_pages']);
-			$tags 		   = implode(", ", $d['tags']);
-			$categories    = implode(", ", $d['categories']);
+
+			$str = isset($d['primary_pages']) ? $d['primary_pages'] : null;
+			$primary_pages = implode( ", ",  $str);
+
+			$str = isset($d['custom_pages']) ? $d['custom_pages'] : null;
+			$custom_pages = implode( ", ", $str );
+
+			$str = isset($d['tags']) ? $d['tags'] : null;
+			$tags = implode( ", ", $str );
+
+			$str = isset($d['categories']) ? $d['categories'] : null;
+			$categories = implode( ", ", $str );
 
 			$status = $wpdb->insert(
 				$table_name,
