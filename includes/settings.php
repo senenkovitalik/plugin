@@ -13,7 +13,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             // get all data from DB
             $d = $this->db->get_data();
 
-            // array of page's types
             $type = array('primary_pages', 'custom_pages', 'tags', 'categories');
 
             // iterate over table rows
@@ -33,31 +32,29 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                         case 1:
                             // primary_pages
                             $p = array('Main Page', 'Front Page', 'Blog Page', 'Posts');
-                            // iterate over primary pages 
-                            foreach($p as $pi) {
-                                // check that $pages_arr contain page $pi
+                            $pp = "";
+
+                            foreach ($p as $pi) {
+
                                 if( in_array($pi, $pages_arr) ) {
-                                    // if so, checkbox is checked
                                     $pp .= "<input type='checkbox' value='".$pi."' checked>".$pi."<br>";
                                 } else {
-                                    // not checked
                                     $pp .= "<input type='checkbox' value='".$pi."'>".$pi."<br>";
                                 }
                             }
-                            
+
                             break;
 
                         case 2:
                             // custom_pages
                             $p = get_pages();
-                            // iterate over custom pages
+                            $cp = "";
+
                             foreach ($p as $pi ) {
-                                // check that $pages_arr contain page $pi
+
                                 if( in_array($pi->post_title, $pages_arr) ) {
-                                    // if so, checkbox is checked
                                     $cp .= "<input type='checkbox' value='".$pi->post_title."' checked>".$pi->post_title."<br>";
                                 } else {
-                                    // not checked
                                     $cp .= "<input type='checkbox' value='".$pi->post_title."'>".$pi->post_title."<br>";
                                 }
                             }
@@ -65,16 +62,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                             break;
 
                         case 3:
-                            // tags, get all tags, if tag empty it not return, so we need 'hide_empty' => false
+                            // tags, 
+                            // get all tags, if tag empty - it not return, so we need 'hide_empty' => false
                             $tags = get_tags( array('hide_empty' => false) ); // data from WPDB 
-                            // iterate over tags
+                            $t = "";
+
                             foreach ($tags as $tag) {
-                                // check that $pages_arr contain tag $tag
+                                
                                 if( in_array($tag->name, $pages_arr) ) {
-                                    // if so, checkbox is checked
                                     $t .= "<input type='checkbox' value='".$tag->name."' checked>".$tag->name."<br>";
                                 } else {
-                                    // not checked
                                     $t .= "<input type='checkbox' value='".$tag->name."'>".$tag->name."<br>";
                                 }
                             }
@@ -84,14 +81,13 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                         case 4:
                             // categories
                             $categories = get_categories();
-                            // iterate over categories
+                            $c;
+
                             foreach ($categories as $cat) {
-                                // check that $pages_arr contain category $cat
+
                                 if( in_array($cat->name, $pages_arr) ) {
-                                    // if so, checkbox is checked
                                     $c .= "<input type='checkbox' value='".$cat->name."' checked>".$cat->name."<br>";
                                 } else {
-                                    // not checked
                                     $c .= "<input type='checkbox' value='".$cat->name."'>".$cat->name."<br>";
                                 }
                             }
@@ -119,7 +115,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
                 </tr>";
 
                 // clear variables for next use
-                $pp = ""; $cp=""; $t=""; $c="";
+                unset($pp, $cp, $t, $c);
             }
         ?>
     </table>
