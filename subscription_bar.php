@@ -41,27 +41,41 @@ class SubscriptionBar {
 		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
 
 		// JS for popup message
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_popup_message' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_popup_message' ));
 
 		// admin settings page
-		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
+		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ));
 
 		// admin settings page CSS
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style' ));
 
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
+
+		// Daily check
+		add_action('my_hourly_event', array( $this, 'do_this_hourly' ));
+
+		add_action('admin_footer', array( $this, 'rate_plugin' ));
 
 		$this->db = $db;
 	}
 
 	/**
-	 *	Create table in WP DB for settings
+	 *	Create table in WP DB
+	 *  and add event to scheduler
      */
 	public static function activate() {
 
 		$db = new DB();
 		$db->create_table();
+
+		wp_schedule_single_event( time()+30, 'my_hourly_event' );
+	}
+
+	// Clear schedule list from daily event
+	public static function deactivate() {
+		wp_clear_scheduled_hook('my_hourly_event');
+		delete_option("rate_plugin");
 	}
 
 	/**
@@ -194,6 +208,20 @@ class SubscriptionBar {
 		echo $output;
 	}
 
+	function do_this_hourly() {
+		add_option('rate_mes', '1', '', 'yes');
+	}
+
+	function rate_plugin() {
+		$opt = intval( get_option('rate_mes') );
+
+		error_log($opt);
+
+		if ($opt === 1) {
+			echo "<script>console.log('Rate plugin, please.');</script>";
+		}
+	}
+
 	/**
 	 *	Show settings page
      */
@@ -202,6 +230,7 @@ class SubscriptionBar {
 	}
 }
 
-register_activation_hook( __FILE__, array('SubscriptionBar', 'activate') );
+register_activation_hook( __FILE__, array( 'SubscriptionBar', 'activate' ));
+// register_deactivation_hook( __FILE__, array( 'SubscriptionBar', 'deactivate' ));
 
 new SubscriptionBar( new DB() );
