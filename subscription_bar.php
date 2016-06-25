@@ -40,6 +40,9 @@ class SubscriptionBar {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
 		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
 
+		// JS for popup message
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_popup_message' ) );
+
 		// admin settings page
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ) );
 
@@ -85,6 +88,14 @@ class SubscriptionBar {
 		}
 
 		wp_die();
+	}
+
+	/** 
+	 * Show popup message at all admin pages
+	 */
+	function admin_popup_message() {
+		wp_register_script( 'popup_message', plugins_url('/assets/js/popup.js', __FILE__) );
+		wp_enqueue_script( 'popup_message' );
 	}
 
 	/**
