@@ -55,6 +55,7 @@ class SubscriptionBar {
 		// Daily check
 		add_action('my_hourly_event', array( $this, 'do_this_hourly' ));
 
+		// Show rate message
 		add_action('admin_footer', array( $this, 'rate_plugin' ));
 
 		$this->db = $db;
@@ -78,17 +79,13 @@ class SubscriptionBar {
 		delete_option("rate_plugin");
 	}
 
-	/**
-	 * Add JS to admin page for AJAX
-     */
+	// Add JS to admin page for AJAX
 	function admin_enqueue_ajax() {
 		wp_enqueue_script( 'bar-admin-ajax', plugins_url( '/assets/js/admin_ajax.js', __FILE__), array('jquery') );
 		wp_localize_script( 'bar-admin-ajax', 'admin_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
-	/**
-	 * Save setting DB to WP DB
-     */
+	// Save setting DB to WP DB
 	function admin_action_callback() {
 
 		// get data from settings page
@@ -104,17 +101,13 @@ class SubscriptionBar {
 		wp_die();
 	}
 
-	/** 
-	 * Show popup message at all admin pages
-	 */
+	// Show popup message at all admin pages
 	function admin_popup_message() {
 		wp_register_script( 'popup_message', plugins_url('/assets/js/popup.js', __FILE__) );
 		wp_enqueue_script( 'popup_message' );
 	}
 
-	/**
-	 * Add menu item to admin page
-     */
+	// Add menu item to admin page
 	function admin_add_menu_item() {
 
 	  // create global var for ident setting page
@@ -212,13 +205,69 @@ class SubscriptionBar {
 		add_option('rate_mes', '1', '', 'yes');
 	}
 
+	// if user use plugin for 2 weeks and have valid ID - show rate popup
 	function rate_plugin() {
 		$opt = intval( get_option('rate_mes') );
 
-		error_log($opt);
-
 		if ($opt === 1) {
-			echo "<script>console.log('Rate plugin, please.');</script>";
+			$db = new DB();
+			$id_arr = $db->get_user_id();
+
+			$status = false;
+
+			foreach ($id_arr as $id) {
+				$url = 'https://rabbut.com/api/v1/js/' . $id->user_id;
+
+				$headers = get_headers($url);
+
+				if ( strpos($headers[6], "200 OK") ) {
+					$status = true;
+				 	echo "<script>console.log('You have valid ID : $id->user_id');</script>";
+				} else {
+				 	echo "<script>console.log('Some problems with your ID : $id->user_id');</script>";
+				}
+			}
+
+			if ($status) {
+				$output = 
+				"<script>
+					var doc = document;
+					var wrap_div = doc.getElementsByClassName('wrap')[0];
+					var popup_div = doc.createElement('div');
+
+					popup_div.id = 'rate_us';
+					popup_div.className = 'updated notice is-dismissible';
+
+					var header = doc.createElement('h3');
+					var header_text = doc.createTextNode('Congratulations!!!');
+					header.appendChild(header_text);
+
+					var message = doc.createElement('p');
+					var message_text = doc.createTextNode('Do you want to rate our plugin?  ');
+					message.appendChild(message_text);
+
+					var link_rate = doc.createElement('a');
+					link_rate.href = 'https://rabbut.com/';
+					link_rate.text = 'Rate us';
+					message.appendChild(link_rate);
+
+					// var separator = doc.createElement('span');
+					var separator_text = doc.createTextNode(' - ');
+					message.appendChild(separator_text);
+
+					var link_hide = doc.createElement('a');
+					link_hide.href = '';
+					link_hide.text = \"Don't show\";
+					message.appendChild(link_hide);
+
+					popup_div.appendChild(header);
+					popup_div.appendChild(message);
+
+					wrap_div.appendChild(popup_div);
+				</script>";
+
+				echo $output;
+			}
 		}
 	}
 
@@ -231,6 +280,6 @@ class SubscriptionBar {
 }
 
 register_activation_hook( __FILE__, array( 'SubscriptionBar', 'activate' ));
-// register_deactivation_hook( __FILE__, array( 'SubscriptionBar', 'deactivate' ));
+register_deactivation_hook( __FILE__, array( 'SubscriptionBar', 'deactivate' ));
 
 new SubscriptionBar( new DB() );

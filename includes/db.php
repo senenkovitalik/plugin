@@ -114,6 +114,16 @@ class DB {
 		return $data;
 	}
 
+	// Return all user ID's from DB
+	function get_user_id() {
+		global $wpdb;
+
+		$table = $this->make_table_name();
+		$data = $wpdb->get_results( "SELECT user_id FROM {$table};");
+		
+		return $data;
+	}
+
 	/**
 	 *	Drop table before uninstall.
      */
