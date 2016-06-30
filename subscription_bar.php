@@ -52,8 +52,8 @@ class SubscriptionBar {
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
 
-		// Daily check
-		add_action('my_hourly_event', array( $this, 'do_this_hourly' ));
+		// Check after 2 weeks
+		add_action('two_weeks_event', array( $this, 'do_this_ones' ));
 
 		// Show rate message
 		add_action('admin_footer', array( $this, 'rate_plugin' ));
@@ -70,13 +70,13 @@ class SubscriptionBar {
 		$db = new DB();
 		$db->create_table();
 
-		wp_schedule_single_event( time()+30, 'my_hourly_event' );
+		wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
 	}
 
 	// Clear schedule list from daily event
 	public static function deactivate() {
-		wp_clear_scheduled_hook('my_hourly_event');
-		delete_option("rate_plugin");
+		wp_clear_scheduled_hook('two_weeks_event');
+		delete_option("rate_mes");
 	}
 
 	// Add JS to admin page for AJAX
@@ -201,7 +201,7 @@ class SubscriptionBar {
 		echo $output;
 	}
 
-	function do_this_hourly() {
+	function do_this_ones() {
 		add_option('rate_mes', '1', '', 'yes');
 	}
 
@@ -216,15 +216,11 @@ class SubscriptionBar {
 			$status = false;
 
 			foreach ($id_arr as $id) {
-				$url = 'https://rabbut.com/api/v1/js/' . $id->user_id;
-
-				$headers = get_headers($url);
-
-				if ( strpos($headers[6], "200 OK") ) {
+				if ( $id->user_id !== "" ) {
 					$status = true;
-				 	echo "<script>console.log('You have valid ID : $id->user_id');</script>";
-				} else {
-				 	echo "<script>console.log('Some problems with your ID : $id->user_id');</script>";
+				 	// echo "<script>console.log('You have valid ID : $id->user_id');</script>";
+				// } else {
+				 	// echo "<script>console.log('Some problems with your ID');</script>";
 				}
 			}
 
@@ -251,7 +247,6 @@ class SubscriptionBar {
 					link_rate.text = 'Rate us';
 					message.appendChild(link_rate);
 
-					// var separator = doc.createElement('span');
 					var separator_text = doc.createTextNode(' - ');
 					message.appendChild(separator_text);
 
@@ -271,9 +266,7 @@ class SubscriptionBar {
 		}
 	}
 
-	/**
-	 *	Show settings page
-     */
+	// Show settings page
 	function show_settings_page() {
 		require_once "includes/settings.php";
 	}

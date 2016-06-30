@@ -1,5 +1,6 @@
+<div class="wrap">
 
-<h2>Subscription bar settigs</h2>
+<h1>Subscription bar settigs</h1>
 <p>You need to add informattion about your accounts. 
 If you don't have account yet, please <a href="https://rabbut.com/">visit</a> our web-site.</p>
 
@@ -486,3 +487,5 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     }
 
 </script>
+
+</div>
