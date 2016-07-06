@@ -69,13 +69,13 @@ class DB {
 			// transform arrays into string with words separated by comma
 			$user_id = $d['user_id'];
 
-			$str = isset($d['primary_pages']) ? implode(", ", $d['primary_pages']) : null;
+			$primary_pages = isset($d['primary_pages']) ? implode(", ", $d['primary_pages']) : null;
 
-			$str = isset($d['custom_pages']) ? implode( ", ", $d['custom_pages']) : null;
+			$custom_pages = isset($d['custom_pages']) ? implode( ", ", $d['custom_pages']) : null;
 
-			$str = isset($d['tags']) ? implode( ", ", $d['tags']) : null;
+			$tags = isset($d['tags']) ? implode( ", ", $d['tags']) : null;
 
-			$str = isset($d['categories']) ? implode( ", ", $d['categories']) : null;
+			$categories = isset($d['categories']) ? implode( ", ", $d['categories']) : null;
 
 			$status = $wpdb->insert(
 				$table_name,

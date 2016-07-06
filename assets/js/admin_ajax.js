@@ -11,21 +11,16 @@ jQuery(document).ready( function( $ ) {
             primary_pages, custom_pages, tags, categories, 
             data = [];
 
-        // iterate over rows
         for(var i=0; i<rows.length; i++) {
 
-            // get user id
             user_id = rows[i].getElementsByTagName("td")[0].getElementsByTagName("input")[0].value;
-            // get all div's from current row
 
             div = rows[i].getElementsByTagName("td")[1].getElementsByTagName("div");
 
-            // iterate over divs
             for(var j=0; j<div.length; j++) {
                 // get checkboxes
                 ch = div[j].getElementsByTagName("input");
 
-                // iterate over checkboxes
                 for(var k=0; k<ch.length; k++) {
                     if( ch[k].checked ) {
                         p_arr.push(ch[k].value);

@@ -54,10 +54,10 @@ class SubscriptionBar {
 		add_action('wp_footer', array( $this, 'insert_script'));
 
 		// Check after 2 weeks
-		// add_action('two_weeks_event', array( $this, 'do_this_ones' ));
+		add_action('two_weeks_event', array( $this, 'do_this_ones' ));
 
 		// Show rate message
-		// add_action('admin_footer', array( $this, 'rate_plugin' ));
+		add_action('admin_footer', array( $this, 'rate_plugin' ));
 
 		$this->db = $db;
 	}
@@ -92,11 +92,16 @@ class SubscriptionBar {
 		// get data from settings page
 		$data = $_POST['data'];
 
-		$id = isset($data['user_id']) ? $data['user_id'] : null;
+		$s = false;
 
-		if ( $id !== null ) {
-			error_log("User id : $id");
-			// wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
+		foreach ($data as $d) {
+			if ( isset( $d['user_id'] ) ) {
+				$s = true;
+			}
+		}
+
+		if ( $s ) {
+			wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
 		}
 
 		// try to save data to DB
@@ -226,70 +231,68 @@ class SubscriptionBar {
 		echo $output;
 	}
 
-	// function do_this_ones() {
-	// 	add_option('rate_mes', '1', '', 'yes');
-	// }
+	function do_this_ones() {
+		add_option('rate_mes', '1', '', 'yes');
+		error_log("do_this_ones");
+	}
 
 	// if user use plugin for 2 weeks and have valid ID - show rate popup
-	// function rate_plugin() {
-	// 	$opt = intval( get_option('rate_mes') );
+	function rate_plugin() {
+		$opt = intval( get_option('rate_mes') );
 
-	// 	if ($opt === 1) {
-	// 		$db = new DB();
-	// 		$id_arr = $db->get_user_id();
+		if ($opt === 1) {
+		// 	$db = new DB();
+		// 	$id_arr = $db->get_user_id();
 
-	// 		$status = false;
+		// 	$status = false;
 
-	// 		foreach ($id_arr as $id) {
-	// 			if ( $id->user_id !== "" ) {
-	// 				$status = true;
-	// 			 	// echo "<script>console.log('You have valid ID : $id->user_id');</script>";
-	// 			// } else {
-	// 			 	// echo "<script>console.log('Some problems with your ID');</script>";
-	// 			}
-	// 		}
+		// 	foreach ($id_arr as $id) {
+		// 		if ( $id->user_id !== "" ) {
+		// 			$status = true;
+		// 		}
+		// 	}
 
-	// 		if ($status) {
-	// 			$output = 
-	// 			"<script>
-	// 				var doc = document;
-	// 				var wrap_div = doc.getElementsByClassName('wrap')[0];
-	// 				var popup_div = doc.createElement('div');
+		// 	if ($status) {
+				$output = 
+				"<script>
+					var doc = document;
+					var wrap_div = doc.getElementsByClassName('wrap')[0];
+					var popup_div = doc.createElement('div');
 
-	// 				popup_div.id = 'rate_us';
-	// 				popup_div.className = 'updated notice is-dismissible';
+					popup_div.id = 'rate_us';
+					popup_div.className = 'updated notice is-dismissible';
 
-	// 				var header = doc.createElement('h3');
-	// 				var header_text = doc.createTextNode('Congratulations!!!');
-	// 				header.appendChild(header_text);
+					var header = doc.createElement('h3');
+					var header_text = doc.createTextNode('Congratulations!!!');
+					header.appendChild(header_text);
 
-	// 				var message = doc.createElement('p');
-	// 				var message_text = doc.createTextNode('Do you want to rate our plugin?  ');
-	// 				message.appendChild(message_text);
+					var message = doc.createElement('p');
+					var message_text = doc.createTextNode('Do you want to rate our plugin?  ');
+					message.appendChild(message_text);
 
-	// 				var link_rate = doc.createElement('a');
-	// 				link_rate.href = 'https://rabbut.com/';
-	// 				link_rate.text = 'Rate us';
-	// 				message.appendChild(link_rate);
+					var link_rate = doc.createElement('a');
+					link_rate.href = 'https://rabbut.com/';
+					link_rate.text = 'Rate us';
+					message.appendChild(link_rate);
 
-	// 				var separator_text = doc.createTextNode(' - ');
-	// 				message.appendChild(separator_text);
+					var separator_text = doc.createTextNode(' - ');
+					message.appendChild(separator_text);
 
-	// 				var link_hide = doc.createElement('a');
-	// 				link_hide.href = '';
-	// 				link_hide.text = \"Don't show\";
-	// 				message.appendChild(link_hide);
+					var link_hide = doc.createElement('a');
+					link_hide.href = '';
+					link_hide.text = \"Don't show\";
+					message.appendChild(link_hide);
 
-	// 				popup_div.appendChild(header);
-	// 				popup_div.appendChild(message);
+					popup_div.appendChild(header);
+					popup_div.appendChild(message);
 
-	// 				wrap_div.appendChild(popup_div);
-	// 			</script>";
+					wrap_div.appendChild(popup_div);
+				</script>";
 
-	// 			echo $output;
-	// 		}
-	// 	}
-	// }
+				echo $output;
+			// }
+		}
+	}
 
 	// Show settings page
 	function show_settings_page() {
