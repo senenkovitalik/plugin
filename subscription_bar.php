@@ -39,6 +39,7 @@ class SubscriptionBar {
 		// ajax admin
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
 		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
+		add_action( 'wp_ajax_popup_action', array( $this, 'popup_action_close' ) );
 
 		// JS for popup message
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_popup_message' ));
@@ -101,10 +102,27 @@ class SubscriptionBar {
 		wp_die();
 	}
 
+	// Add option for show/hide popup #1
+	function popup_action_close() {
+		$data = $_POST['close'];
+
+		if ($data) {
+			add_option('show_popup', 'no');
+		}
+
+		wp_die();
+	}
+
 	// Show popup message at all admin pages
 	function admin_popup_message() {
-		wp_register_script( 'popup_message', plugins_url('/assets/js/popup.js', __FILE__) );
-		wp_enqueue_script( 'popup_message' );
+		$show = get_option('show_popup');
+		// uncoment line after and comment out line before to show popup #1
+		// $show = "yes";
+
+		if ( $show !== "no" ) {
+			wp_register_script( 'popup_message', plugins_url('/assets/js/popup.js', __FILE__) );
+			wp_enqueue_script( 'popup_message' );
+		}
 	}
 
 	// Add menu item to admin page
