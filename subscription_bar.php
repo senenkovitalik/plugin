@@ -40,9 +40,11 @@ class SubscriptionBar {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_ajax' ) );
 		add_action( 'wp_ajax_admin_action', array( $this, 'admin_action_callback' ) );
 		add_action( 'wp_ajax_popup_action', array( $this, 'popup_action_close' ) );
+		add_action( 'wp_ajax_rate_action', array( $this, 'rate_action_close' ) );
 
 		// JS for popup message
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_popup_message' ));
+		add_action( 'admin_enqueue_scripts', array( $this, 'rate_plugin' ));
 
 		// admin settings page
 		add_action( 'admin_menu', array( $this, 'admin_add_menu_item' ));
@@ -53,8 +55,10 @@ class SubscriptionBar {
 		// add JS to pages
 		add_action('wp_footer', array( $this, 'insert_script'));
 
-		// Check after 2 weeks
+		// Show popup #2 after 2 weeks
 		add_action('two_weeks_event', array( $this, 'do_this_ones' ));
+		// Show popup #2 after 1 week
+		add_action('one_week_event', array( $this, 'do_this_ones' ));
 
 		// Show rate message
 		add_action('admin_footer', array( $this, 'rate_plugin' ));
@@ -67,17 +71,14 @@ class SubscriptionBar {
 	 *  and add event to scheduler
      */
 	public static function activate() {
-
 		$db = new DB();
 		$db->create_table();
-
-		// wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
 	}
 
-	// Clear schedule list from daily event
+	// Clear schedule list from all tasks
 	public static function deactivate() {
 		wp_clear_scheduled_hook('two_weeks_event');
-		delete_option("rate_mes");
+		wp_clear_scheduled_hook('one_week_event');
 	}
 
 	// Add JS to admin page for AJAX
@@ -86,7 +87,8 @@ class SubscriptionBar {
 		wp_localize_script( 'bar-admin-ajax', 'admin_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
-	// Save setting DB to WP DB
+	// Add event to scheduler - show popup #2 after 2 weeks
+	// Save setting to DB
 	function admin_action_callback() {
 
 		// get data from settings page
@@ -94,6 +96,7 @@ class SubscriptionBar {
 
 		$s = false;
 
+		// if there at least one user ID
 		foreach ($data as $d) {
 			if ( isset( $d['user_id'] ) ) {
 				$s = true;
@@ -101,6 +104,7 @@ class SubscriptionBar {
 		}
 
 		if ( $s ) {
+			// show popup #2 after 2 weeks
 			wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
 		}
 
@@ -125,7 +129,26 @@ class SubscriptionBar {
 		wp_die();
 	}
 
-	// Show popup message at all admin pages
+	// Add option for show/hide popup #2
+	// hide forever or only for one week
+	function rate_action_close() {
+	
+		$close_forever = isset($_POST['closeForever']) ? $_POST['closeForever'] : false;
+		$close_for_a_week = isset($_POST['closeForAWeek']) ? $_POST['closeForAWeek'] : false;
+
+		if ( $close_forever ) {
+			delete_option('rate_mes');
+		}
+
+		if ( $close_for_a_week ) {
+			delete_option('rate_mes');
+			wp_schedule_single_event( time() + 3600*24*7, 'one_week_event' );
+		}
+
+		wp_die();
+	}
+
+	// Show popup #1 at all admin's pages
 	function admin_popup_message() {
 		$show = get_option('show_popup');
 		// uncoment line after and comment out line before to show popup #1
@@ -231,66 +254,18 @@ class SubscriptionBar {
 		echo $output;
 	}
 
+	// Add option that indicates show popup #2 or not
 	function do_this_ones() {
 		add_option('rate_mes', '1', '', 'yes');
-		error_log("do_this_ones");
 	}
 
-	// if user use plugin for 2 weeks and have valid ID - show rate popup
+	// Show popup #2
 	function rate_plugin() {
 		$opt = intval( get_option('rate_mes') );
 
 		if ($opt === 1) {
-		// 	$db = new DB();
-		// 	$id_arr = $db->get_user_id();
-
-		// 	$status = false;
-
-		// 	foreach ($id_arr as $id) {
-		// 		if ( $id->user_id !== "" ) {
-		// 			$status = true;
-		// 		}
-		// 	}
-
-		// 	if ($status) {
-				$output = 
-				"<script>
-					var doc = document;
-					var wrap_div = doc.getElementsByClassName('wrap')[0];
-					var popup_div = doc.createElement('div');
-
-					popup_div.id = 'rate_us';
-					popup_div.className = 'updated notice is-dismissible';
-
-					var header = doc.createElement('h3');
-					var header_text = doc.createTextNode('Congratulations!!!');
-					header.appendChild(header_text);
-
-					var message = doc.createElement('p');
-					var message_text = doc.createTextNode('Do you want to rate our plugin?  ');
-					message.appendChild(message_text);
-
-					var link_rate = doc.createElement('a');
-					link_rate.href = 'https://rabbut.com/';
-					link_rate.text = 'Rate us';
-					message.appendChild(link_rate);
-
-					var separator_text = doc.createTextNode(' - ');
-					message.appendChild(separator_text);
-
-					var link_hide = doc.createElement('a');
-					link_hide.href = '';
-					link_hide.text = \"Don't show\";
-					message.appendChild(link_hide);
-
-					popup_div.appendChild(header);
-					popup_div.appendChild(message);
-
-					wrap_div.appendChild(popup_div);
-				</script>";
-
-				echo $output;
-			// }
+			wp_register_script( 'rate_message', plugins_url('/assets/js/rate_popup.js', __FILE__) );
+			wp_enqueue_script( 'rate_message' );
 		}
 	}
 
