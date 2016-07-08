@@ -90,26 +90,25 @@ class SubscriptionBar {
 	// Add event to scheduler - show popup #2 after 2 weeks
 	// Save setting to DB
 	function admin_action_callback() {
-
-		// get data from settings page
-		$data = $_POST['data'];
-
 		$s = false;
+		// get data from settings page
+		$data = isset( $_POST['data'] ) ? $_POST['data'] : false;
 
-		// if there at least one user ID
-		foreach ($data as $d) {
-			if ( isset( $d['user_id'] ) ) {
-				$s = true;
+		if ( $data ) {
+			// if there at least one user ID
+			foreach ( $data as $d ) {
+				if ( isset( $d['user_id'] ) ) {
+					$s = true;
+				}
+			}
+			if ( $s ) {
+				// show popup #2 after 2 weeks
+				wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
 			}
 		}
-
-		if ( $s ) {
-			// show popup #2 after 2 weeks
-			wp_schedule_single_event( time() + 3600*24*14, 'two_weeks_event' );
-		}
-
+		
 		// try to save data to DB
-		if(	$this->db->save_settings($data) ) {
+		if(	$this->db->save_settings( $data ) ) {
 			echo "Your data succesfuly saved!!!";
 		} else {
 			echo "Oops! Some problems.";

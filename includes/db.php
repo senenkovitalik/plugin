@@ -61,33 +61,36 @@ class DB {
 
 		$table_name = $this->make_table_name();
 		
-		// clear table
-		$wpdb->query("TRUNCATE TABLE {$table_name};");
+		// if data have values - save data
+		// if data = false - clear table
+		if ( $data ) {
+			$wpdb->query("TRUNCATE TABLE {$table_name};");
 
-		foreach ($data as $d) { 
+			foreach ( $data as $d ) { 
 
-			// transform arrays into string with words separated by comma
-			$user_id = $d['user_id'];
+				// transform arrays into string with words separated by comma
+				$user_id = $d['user_id'];
 
-			$primary_pages = isset($d['primary_pages']) ? implode(", ", $d['primary_pages']) : null;
+				$primary_pages = isset($d['primary_pages']) ? implode(", ", $d['primary_pages']) : null;
+				$custom_pages = isset($d['custom_pages']) ? implode( ", ", $d['custom_pages']) : null;
+				$tags = isset($d['tags']) ? implode( ", ", $d['tags']) : null;
+				$categories = isset($d['categories']) ? implode( ", ", $d['categories']) : null;
 
-			$custom_pages = isset($d['custom_pages']) ? implode( ", ", $d['custom_pages']) : null;
-
-			$tags = isset($d['tags']) ? implode( ", ", $d['tags']) : null;
-
-			$categories = isset($d['categories']) ? implode( ", ", $d['categories']) : null;
-
-			$status = $wpdb->insert(
-				$table_name,
-				array(
-					'user_id' 		=> $user_id,
-					'primary_pages' => $primary_pages,
-					'custom_pages'	=> $custom_pages,
-					'tags'			=> $tags,
-					'categories'	=> $categories
-				),
-				array('%s', '%s', '%s', '%s', '%s')
-			);
+				$status = $wpdb->insert(
+					$table_name,
+					array(
+						'user_id' 		=> $user_id,
+						'primary_pages' => $primary_pages,
+						'custom_pages'	=> $custom_pages,
+						'tags'			=> $tags,
+						'categories'	=> $categories
+					),
+					array('%s', '%s', '%s', '%s', '%s')
+				);
+			}
+		} else {
+			$wpdb->query("TRUNCATE TABLE {$table_name};");
+			$status = true;
 		}
 
 		return $status;
