@@ -355,17 +355,17 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
     // create object of lists of pages, tags, categories
     function allData() {
         <?php 
-            $tags = get_tags( array('hide_empty'   => false) );
+            $tags = get_tags( array( 'hide_empty' => false ) );
             $tags_arr = array(); 
-            foreach ($tags as $tag) {
-                array_push($tags_arr, $tag->name);
+            foreach ( $tags as $tag ) {
+                array_push( $tags_arr, $tag->name );
             }
 
             $categories = get_categories();
             $cat_arr = array();
             if( $categories ) {
-                foreach ($categories as $cat) {
-                    array_push($cat_arr, $cat->name);
+                foreach ( $categories as $cat ) {
+                    array_push( $cat_arr, $cat->name );
                 }
             }
 
@@ -373,16 +373,16 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             $page_arr = array();
             $pages = get_pages( $args );
             if( $pages ) {
-                foreach ($pages as $page) {
-                    array_push($page_arr, $page->post_title);
+                foreach ( $pages as $page ) {
+                    array_push( $page_arr, $page->post_title );
                 }
             }
 
             $json = array(
-                array('primary' => array('Main Page', 'Front Page', 'Blog Page', 'Posts')),
-                array('custom' => $page_arr),
-                array('tags' => $tags_arr),
-                array('categories' => $cat_arr)
+                array( 'primary' => array('Main Page', 'Front Page', 'Blog Page', 'Posts') ),
+                array( 'custom' => $page_arr ),
+                array( 'tags' => $tags_arr ),
+                array( 'categories' => $cat_arr )
             );
         ?>
 
@@ -395,8 +395,7 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
         
         var checkedArr = [];
 
-        // iterate over rows
-        for(var i=0; i<table.rows.length; i++) {
+        for(var i = 0; i < table.rows.length; i++) {
 
             // current table row
             row = table.rows[i];
@@ -404,13 +403,13 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             // get <td> with checkboxes
             tdCheck = row.cells[1];
             div_arr = tdCheck.getElementsByTagName("div");
-            // iterate over divs
-            for(var j=0; j<div_arr.length; j++) {
+
+            for(var j = 0; j < div_arr.length; j++) {
                 // get list of checkboxes
                 ch_arr = div_arr[j].getElementsByTagName("input");
-                for(var l=0; l<ch_arr.length; l++) {
+                for(var l = 0; l < ch_arr.length; l++) {
                     // if chbox checked - add to array his name
-                    if(ch_arr[l].checked) checkedArr.push( ch_arr[l].defaultValue );   
+                    if(ch_arr[l].checked) checkedArr.push(ch_arr[l].defaultValue);   
                 }
             }
         }
@@ -425,7 +424,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
 
         checkedArr = getCheckedBoxes();
 
-        // iterate over rows
         for(var i=0; i<table.rows.length; i++) {
 
             // current table row
@@ -435,7 +433,6 @@ If you don't have account yet, please <a href="https://rabbut.com/">visit</a> ou
             tdCheck = row.cells[1];
             div_arr = tdCheck.getElementsByTagName("div");
 
-            // iterate over divs
             for(var j=0; j<div_arr.length; j++) {
 
                 // get list of checkboxes

@@ -1,11 +1,12 @@
 jQuery(document).ready( function ($) {
+
   var wrap_div = $("div.wrap");
 
   // create global function
   window.closeAJAX = function(e, target) {
   	e.preventDefault();
 
-	var obj = {
+	  var obj = {
 	  	'action' : 'rate_action',
   	}
 
@@ -39,17 +40,16 @@ jQuery(document).ready( function ($) {
 
   // close button at right upper corner
   var button = $('<button />', {
-  	'class' : "notice-dismiss",
-	type : "button",
-	html : '<span class="screen-reader-text">Dismiss this notice.</span>',
-	on : {
-		click : function() {
-			closeAJAX(window.event, this);
-		}
-	}
+    'class' : "notice-dismiss",
+  	type : "button",
+  	html : '<span class="screen-reader-text">Dismiss this notice.</span>',
+  	on : {
+  		click : function() {
+  			closeAJAX(window.event, this);
+  		}
+  	}
   });
 
   button.appendTo(popup_div);
-
   popup_div.appendTo(wrap_div);
 });

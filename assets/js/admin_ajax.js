@@ -1,17 +1,17 @@
-jQuery(document).ready( function( $ ) {
+jQuery(document).ready(function($) {
 
-    $("#form_db_set").submit( function( event ) {
+    $("#form_db_set").submit( function(event) {
 
         event.preventDefault();
 
         var table = $("#user_table")[0];
-        
         var rows = table.rows;
         var userID, div, ch, p_arr = [],
             primaryPages, customPages, tags, categories, 
             data = [];
 
         for (var i = 0; i < rows.length; i++) {
+
             userID = rows[i].getElementsByTagName("td")[0].getElementsByTagName("input")[0].value;
             div = rows[i].getElementsByTagName("td")[1].getElementsByTagName("div");
 
@@ -49,20 +49,16 @@ jQuery(document).ready( function( $ ) {
             obj.tags = tags;
             obj.categories = categories;
 
-            data.push(obj);     // data for post request
+            data.push(obj);
         }
-
-        console.log(data);
 
         // send data to server
         $.post(
             admin_object.ajax_url,
             {'action': 'admin_action', 'data': data},
-            // get response
-            function( response ) {
+            function(response) {
                 $("#stat").text( response );
             }
         );
-
     });
 });

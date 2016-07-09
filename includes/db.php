@@ -16,7 +16,6 @@ class DB {
 		$table_prefix = $wpdb->prefix;
 		$t_name = "subform_settings";
 
-		// table name
 		$table_name = $table_prefix . $t_name;
 
 		return $table_name;
@@ -36,7 +35,7 @@ class DB {
 			$wpdb->prepare( "SHOW TABLES LIKE '$table_name'", "%s" )
 		);
 
-		if ( $table !== $table_name) {
+		if ( $table !== $table_name ) {
 
 			// create table
 			$sql = "CREATE TABLE {$table_name} (
@@ -106,19 +105,19 @@ class DB {
 		global $wpdb;
 
 		$table_name = $this->make_table_name();
-
 		// associative array of rows
-		$data = $wpdb->get_results("SELECT * FROM {$table_name};", ARRAY_A);
+		$data = $wpdb->get_results( "SELECT * FROM {$table_name};", ARRAY_A );
 
 		return $data;
 	}
 
 	// Return all user ID's from DB
 	function get_user_id() {
+
 		global $wpdb;
 
 		$table = $this->make_table_name();
-		$data = $wpdb->get_results( "SELECT user_id FROM {$table};");
+		$data = $wpdb->get_results( "SELECT user_id FROM {$table};" );
 		
 		return $data;
 	}
@@ -142,20 +141,20 @@ class DB {
 		// get all data from DB
 		$data = $this->get_data();
 
-		foreach ($data as $row) {
+		foreach ( $data as $row ) {
 
             // brake string into array
-            $prim = explode(', ', $row['primary_pages']);
-            $cust = explode(', ', $row['custom_pages']);
-            $tags = explode(', ', $row['tags']);
-            $cats = explode(', ', $row['categories']);
+            $prim = explode( ', ', $row['primary_pages'] );
+            $cust = explode( ', ', $row['custom_pages'] );
+            $tags = explode( ', ', $row['tags'] );
+            $cats = explode( ', ', $row['categories'] );
 
 			// check that page exist in one of array 
             if( 
-            	in_array($page, $prim) || 
-            	in_array($page, $cust) ||
-            	in_array($page, $tags) || 
-            	in_array($page, $cats) 
+            	in_array( $page, $prim ) || 
+            	in_array( $page, $cust ) ||
+            	in_array( $page, $tags ) || 
+            	in_array( $page, $cats ) 
             ) {
             	// if so, return user ID
             		return $row['user_id'];
